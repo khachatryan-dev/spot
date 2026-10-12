@@ -1,0 +1,2 @@
+ALTER TABLE "restaurant_locations" DROP CONSTRAINT "restaurant_locations_coordinates";--> statement-breakpoint
+ALTER TABLE "restaurant_locations" ADD CONSTRAINT "restaurant_locations_coordinates" CHECK (("restaurant_locations"."latitude" IS NULL AND "restaurant_locations"."longitude" IS NULL) OR ("restaurant_locations"."latitude" IS NOT NULL AND "restaurant_locations"."longitude" IS NOT NULL AND "restaurant_locations"."latitude" BETWEEN -90 AND 90 AND "restaurant_locations"."longitude" BETWEEN -180 AND 180));

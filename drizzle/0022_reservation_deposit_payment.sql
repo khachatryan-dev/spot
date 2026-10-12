@@ -1,0 +1,1 @@
+ALTER TABLE "reservations" ADD COLUMN "deposit_payment_id" uuid;

@@ -1,0 +1,33 @@
+﻿# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+.vercel/
+
+# Environment variables
+.env*
+!.env.example
+
+# Logs
+*.log
+
+# Tests
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+# Temporary files
+*.tmp

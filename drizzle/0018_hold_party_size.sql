@@ -1,0 +1,2 @@
+ALTER TABLE "reservation_holds" ADD COLUMN "party_size" smallint;--> statement-breakpoint
+ALTER TABLE "reservation_holds" ADD CONSTRAINT "reservation_holds_party_size" CHECK ("reservation_holds"."party_size" IS NULL OR "reservation_holds"."party_size" BETWEEN 1 AND 50);
