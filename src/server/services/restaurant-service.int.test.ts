@@ -10,6 +10,7 @@ import {
   createRestaurant,
   getPublicRestaurant,
   getRestaurant,
+  getSetupProgress,
   listMyRestaurants,
   MAX_UNPUBLISHED_RESTAURANTS,
   submitForReview,
@@ -147,6 +148,22 @@ describe("updateRestaurant", () => {
     });
     const [row] = await db.select().from(restaurants);
     expect(row).toMatchObject({ status: "draft", slug: "cafe" });
+  });
+});
+
+describe("getSetupProgress", () => {
+  it("counts what the owner has set up, for the restaurant's team only", async () => {
+    const ani = await createUser("ani@example.am");
+    const stranger = await createUser("stranger@example.am");
+    const restaurant = await createRestaurant(ani, { name: "Cafe" });
+    expect(await getSetupProgress(ani, restaurant.id)).toEqual({
+      locations: 0,
+      menuItems: 0,
+      tables: 0,
+    });
+    await addLocation(restaurant.id);
+    expect(await getSetupProgress(ani, restaurant.id)).toMatchObject({ locations: 1 });
+    expect(await codeOf(getSetupProgress(stranger, restaurant.id))).toMatch(/FORBIDDEN|NOT_FOUND/);
   });
 });
 

@@ -2,6 +2,7 @@ import { ChevronRight, Plus, Store } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { RestaurantStatusBadge } from "@/components/shared/restaurant-status-badge";
+import { SetupGuide } from "@/features/restaurant-onboarding/setup-guide";
 import { Button } from "@/components/ui/button";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
@@ -16,14 +17,23 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]/das
 
   if (restaurants.length === 0) {
     return (
-      <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-xl border border-dashed p-10 text-center">
-        <Store className="size-10 text-muted-foreground" aria-hidden />
-        <h1 className="text-xl font-semibold">{t("emptyTitle")}</h1>
-        <p className="text-sm text-muted-foreground">{t("emptyDescription")}</p>
-        <Button render={<Link href="/dashboard/new" />}>
-          <Plus aria-hidden />
-          {t("create")}
-        </Button>
+      <div className="flex max-w-3xl flex-col gap-6">
+        <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 p-8 text-center ring-1 ring-orange-100 sm:p-10">
+          <span className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-500/20 motion-safe:animate-in motion-safe:zoom-in-90">
+            <Store className="size-7" aria-hidden />
+          </span>
+          <h1 className="text-2xl font-bold">{t("emptyTitle")}</h1>
+          <p className="max-w-md text-muted-foreground">{t("emptyDescription")}</p>
+          <Button
+            size="lg"
+            className="h-10 rounded-xl px-5"
+            render={<Link href="/dashboard/new" />}
+          >
+            <Plus aria-hidden />
+            {t("create")}
+          </Button>
+        </div>
+        <SetupGuide />
       </div>
     );
   }

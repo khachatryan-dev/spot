@@ -48,6 +48,8 @@ export const PLATFORM_PERMISSIONS = [
   "platform:restaurants:manage",
   "platform:users:manage",
   "platform:reviews:moderate",
+  /** Read and close contact-form messages. */
+  "platform:messages:manage",
   "platform:payments:read",
   "platform:audit:read",
   "platform:analytics:read",

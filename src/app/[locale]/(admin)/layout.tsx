@@ -6,12 +6,22 @@ import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { guardPage, requirePlatformPermission } from "@/server/auth/guards";
 import { countOpenReports } from "@/server/services/admin-review-service";
+import { countNewContactMessages } from "@/server/services/contact-service";
 
-const SECTIONS = ["restaurants", "stats", "users", "reviews", "payments", "audit"] as const;
+const SECTIONS = [
+  "restaurants",
+  "stats",
+  "users",
+  "reviews",
+  "messages",
+  "payments",
+  "audit",
+] as const;
 const LINKS: Partial<Record<(typeof SECTIONS)[number], string>> = {
   restaurants: "/admin",
   audit: "/admin/audit",
   reviews: "/admin/reviews",
+  messages: "/admin/messages",
   users: "/admin/users",
   payments: "/admin/payments",
   stats: "/admin/stats",
@@ -23,7 +33,14 @@ export default async function AdminLayout({ children, params }: LayoutProps<"/[l
   const user = await guardPage(locale, () => requirePlatformPermission("platform:admin:access"));
   const t = await getTranslations("Admin.nav");
   const common = await getTranslations("Common");
-  const openReports = await countOpenReports();
+  const [openReports, newMessages] = await Promise.all([
+    countOpenReports(),
+    countNewContactMessages(),
+  ]);
+  const counts: Partial<Record<(typeof SECTIONS)[number], number>> = {
+    reviews: openReports,
+    messages: newMessages,
+  };
 
   return (
     <div className="flex flex-1 flex-col">
@@ -40,9 +57,9 @@ export default async function AdminLayout({ children, params }: LayoutProps<"/[l
                 <li key={section}>
                   <Link href={href} className="text-sm font-medium hover:underline">
                     {t(section)}
-                    {section === "reviews" && openReports > 0 && (
+                    {(counts[section] ?? 0) > 0 && (
                       <span className="ml-1 rounded-full bg-destructive px-1.5 text-xs text-white">
-                        {openReports}
+                        {counts[section]}
                       </span>
                     )}
                   </Link>

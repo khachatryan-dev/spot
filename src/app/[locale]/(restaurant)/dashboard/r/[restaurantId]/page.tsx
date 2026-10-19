@@ -1,14 +1,15 @@
-import { CheckCircle2, Circle, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { LocationList } from "@/features/restaurant-locations/location-list";
 import { AddLocationForm } from "@/features/restaurant-onboarding/add-location-form";
+import { SetupGuide, setupComplete } from "@/features/restaurant-onboarding/setup-guide";
 import { SubmitForReviewButton } from "@/features/restaurant-onboarding/submit-for-review-button";
 import { resolveLocale } from "@/i18n/locale";
 import { guardPage, requireUser } from "@/server/auth/guards";
 import { getRestaurantAccess } from "@/server/policies/restaurant-access";
 import { listLocations } from "@/server/services/location-service";
-import { getRestaurant } from "@/server/services/restaurant-service";
+import { getRestaurant, getSetupProgress } from "@/server/services/restaurant-service";
 import { roleHasPermission } from "@/shared/auth/permissions";
 
 export default async function RestaurantSetupPage({
@@ -16,14 +17,18 @@ export default async function RestaurantSetupPage({
 }: PageProps<"/[locale]/dashboard/r/[restaurantId]">) {
   const locale = await resolveLocale(params);
   const { restaurantId } = await params;
-  const { restaurant, locations, canManage } = await guardPage(locale, async () => {
+  const { restaurant, locations, progress, canManage } = await guardPage(locale, async () => {
     const user = await requireUser();
     const restaurant = await getRestaurant(user, restaurantId); // NOT_FOUND for other tenants → 404
-    const locations = await listLocations(user, restaurantId);
+    const [locations, progress] = await Promise.all([
+      listLocations(user, restaurantId),
+      getSetupProgress(user, restaurantId),
+    ]);
     const access = await getRestaurantAccess(user.id, restaurantId);
     return {
       restaurant,
       locations,
+      progress,
       canManage: !!access && roleHasPermission(access.role, "restaurant:update"),
     };
   });
@@ -45,26 +50,8 @@ export default async function RestaurantSetupPage({
         </div>
       )}
 
-      {restaurant.status === "draft" && (
-        <section className="flex flex-col gap-4" aria-labelledby="checklist">
-          <h2 id="checklist" className="text-lg font-medium">
-            {t("checklistTitle")}
-          </h2>
-          <ol className="flex flex-col gap-3">
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="size-5 text-primary" aria-hidden />
-              {t("stepProfile")}
-            </li>
-            <li className="flex items-center gap-2">
-              {hasLocation ? (
-                <CheckCircle2 className="size-5 text-primary" aria-hidden />
-              ) : (
-                <Circle className="size-5 text-muted-foreground" aria-hidden />
-              )}
-              {t("stepLocation")}
-            </li>
-          </ol>
-        </section>
+      {canManage && !setupComplete(restaurant.status, progress) && (
+        <SetupGuide restaurant={{ id: restaurant.id, status: restaurant.status, progress }} />
       )}
 
       <section className="flex flex-col gap-4" aria-labelledby="locations">

@@ -2,11 +2,13 @@ import { getTranslations } from "next-intl/server";
 
 import { LanguageSwitcher } from "@/components/shared/language-switcher";
 import { NotificationBell } from "@/components/shared/notification-bell";
+import { Logo } from "@/features/marketing/logo";
+import { SiteFooter } from "@/features/marketing/site-footer";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { getSession } from "@/server/auth/session";
 
-/** Public pages: home, restaurant pages, discovery. Server-rendered for SEO (§39). */
+/** Public pages: home, restaurants, about, contact, legal. Server-rendered for SEO (§39). */
 export default async function MarketingLayout({ children, params }: LayoutProps<"/[locale]">) {
   await resolveLocale(params);
   const t = await getTranslations("Marketing");
@@ -15,19 +17,19 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b">
+      <header className="border-b bg-background/80">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4">
-          <Link href="/" className="text-lg font-semibold">
-            {common("appName")}
+          <Link href="/">
+            <Logo name={common("appName")} compact />
           </Link>
           <nav className="flex items-center gap-3 whitespace-nowrap sm:gap-4">
-            <Link href="/restaurants" className="text-sm font-medium">
+            <Link href="/restaurants" className="text-sm font-medium hover:text-primary">
               {t("nav.restaurants")}
             </Link>
             {/* On phones the home page's own button covers this. */}
             <Link
-              href="/dashboard"
-              className="hidden text-sm text-muted-foreground hover:text-foreground sm:inline"
+              href="/login?for=restaurant"
+              className="hidden text-sm text-muted-foreground hover:text-primary sm:inline"
             >
               {t("nav.forRestaurants")}
             </Link>
@@ -48,11 +50,7 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
         </div>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
-      <footer className="border-t">
-        <div className="mx-auto w-full max-w-6xl px-4 py-6 text-sm text-muted-foreground">
-          {t("footer.rights", { year: new Date().getFullYear() })}
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

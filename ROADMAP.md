@@ -186,6 +186,10 @@ Keep the summary short.
 - [ ] First POS integration `~200k`
 - [x] 1C adapter architecture `~200k`
 
+### ✅ Phase 15 — Brand & public pages — ≈ 300k tokens
+- [x] Warm orange theme, landing page with guest / restaurant entry points and reduced-motion-safe animations, About, Contact (form → `contact_messages`, admin `/admin/messages`), FAQ, Privacy, Terms, footer and sitemap `~300k` — company details are placeholders in `src/shared/config/company.ts`; legal texts need a lawyer's review
+- [x] Owner onboarding `~200k` — restaurant sign-in / sign-up (`?for=restaurant`, branded guest vs restaurant panels, switch links), new owners land on "Create your restaurant", 6-step setup guide with progress on the dashboard
+
 ---
 
 ## Progress log

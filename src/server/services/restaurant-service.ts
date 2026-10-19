@@ -1,10 +1,12 @@
 import "server-only";
 
+import { and, eq, sql } from "drizzle-orm";
+
 import { recordAudit } from "@/server/audit/record-audit";
 import type { SessionUser } from "@/server/auth/session";
 import { db } from "@/server/db/client";
 import { isUniqueViolation } from "@/server/db/errors";
-import type { Restaurant } from "@/server/db/schema";
+import { diningTables, menuItems, type Restaurant, restaurantLocations } from "@/server/db/schema";
 import { authorizeRestaurant } from "@/server/policies/restaurant-access";
 import * as repo from "@/server/repositories/restaurant-repository";
 import { canTransition, isPubliclyVisible } from "@/shared/domain/restaurant-status";
@@ -81,6 +83,32 @@ export async function getRestaurant(actor: Actor, restaurantId: string): Promise
   const restaurant = await repo.findRestaurantById(restaurantId);
   if (!restaurant) throw new AppError("NOT_FOUND", "Restaurant not found.");
   return restaurant;
+}
+
+export interface SetupProgress {
+  locations: number;
+  menuItems: number;
+  tables: number;
+}
+
+/** What an owner has set up so far, for the onboarding guide. */
+export async function getSetupProgress(actor: Actor, restaurantId: string): Promise<SetupProgress> {
+  await authorizeRestaurant(actor.id, restaurantId, "restaurant:read");
+  const count = sql<number>`count(*)::int`;
+  const [[locations], [items], [tables]] = await Promise.all([
+    db
+      .select({ count })
+      .from(restaurantLocations)
+      .where(
+        and(
+          eq(restaurantLocations.restaurantId, restaurantId),
+          eq(restaurantLocations.status, "active"),
+        ),
+      ),
+    db.select({ count }).from(menuItems).where(eq(menuItems.restaurantId, restaurantId)),
+    db.select({ count }).from(diningTables).where(eq(diningTables.restaurantId, restaurantId)),
+  ]);
+  return { locations: locations!.count, menuItems: items!.count, tables: tables!.count };
 }
 
 /** Edit the profile. Only fields in the schema can change — never status or slug. */

@@ -31,6 +31,11 @@ export async function hitRateLimit(
  * x-forwarded-for; the first entry is the original client.
  */
 export function clientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || request.headers.get("x-real-ip") || "unknown";
+  return clientIpFromHeaders(request.headers);
+}
+
+/** Same, from request headers (Server Actions have no Request object). */
+export function clientIpFromHeaders(headers: Headers): string {
+  const forwarded = headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  return forwarded || headers.get("x-real-ip") || "unknown";
 }

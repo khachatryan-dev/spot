@@ -24,10 +24,109 @@
       "searchLabel": "Search restaurants",
       "searchPlaceholder": "Restaurant, cuisine or dish",
       "search": "Search",
-      "browse": "Browse all restaurants"
+      "browse": "Browse all restaurants",
+      "badge": "Restaurants of Armenia in one app",
+      "doors": {
+        "title": "Who are you here?",
+        "guest": {
+          "label": "For guests",
+          "title": "I want to eat out",
+          "text": "Find a place, book a table, scan the QR code at your table to order, and pay without waiting for the bill.",
+          "cta": "Find a restaurant",
+          "more": "How it works"
+        },
+        "restaurant": {
+          "label": "For restaurants",
+          "title": "I run a restaurant",
+          "text": "A QR menu, live orders for the kitchen, reservations, bills and reviews — all in one dashboard.",
+          "more": "See features"
+        }
+      },
+      "guests": {
+        "eyebrow": "For guests",
+        "title": "Four steps from hungry to happy",
+        "steps": {
+          "find": {
+            "title": "Find",
+            "text": "Search by name, cuisine or dish, see what's open now and what's near you."
+          },
+          "book": {
+            "title": "Book",
+            "text": "Pick a day, a time and the number of people — your table waits for you."
+          },
+          "scan": {
+            "title": "Scan & order",
+            "text": "Scan the QR code on your table, open the menu with photos and order in a few taps."
+          },
+          "pay": {
+            "title": "Pay & review",
+            "text": "See your bill any time, split it with friends, and tell others how it was."
+          }
+        },
+        "cta": "Start exploring"
+      },
+      "restaurants": {
+        "eyebrow": "For restaurants",
+        "title": "Everything your restaurant needs, in one place",
+        "subtitle": "Set up in an afternoon. Your team works from phones and tablets they already have — no special hardware.",
+        "features": {
+          "qrMenu": {
+            "title": "QR menu",
+            "text": "A beautiful menu with photos, in Armenian and English, updated in seconds."
+          },
+          "orders": {
+            "title": "Table orders",
+            "text": "Guests order from the table; waiters see every order and request live."
+          },
+          "kitchen": {
+            "title": "Kitchen screen",
+            "text": "Cooks see what to prepare and mark dishes ready, without paper tickets."
+          },
+          "reservations": {
+            "title": "Reservations",
+            "text": "Online booking with no double bookings and optional deposits."
+          },
+          "bills": {
+            "title": "Bills & split",
+            "text": "Itemised bills, split between guests, card or cash."
+          },
+          "insights": {
+            "title": "Reviews & stats",
+            "text": "Real reviews from real visits, and numbers that show what sells."
+          }
+        },
+        "cta": "Add your restaurant — free for the first year",
+        "talk": "Talk to us first"
+      },
+      "final": {
+        "title": "Ready when you are",
+        "text": "Hungry? Find a table nearby. Running a restaurant? Bring it online today.",
+        "guestCta": "Find a restaurant",
+        "restaurantCta": "I own a restaurant"
+      }
     },
     "footer": {
-      "rights": "© {year} Spot"
+      "rights": "© {year} Spot",
+      "tagline": "Find restaurants, book a table and order right from your table — across Armenia.",
+      "guests": {
+        "title": "For guests",
+        "findRestaurants": "Find a restaurant",
+        "howItWorks": "How it works",
+        "faq": "Questions & answers"
+      },
+      "restaurants": {
+        "title": "For restaurants",
+        "addRestaurant": "Add your restaurant",
+        "features": "Features",
+        "dashboardSignIn": "Sign in to the dashboard"
+      },
+      "company": {
+        "title": "Company",
+        "about": "About us",
+        "contact": "Contact us",
+        "privacy": "Privacy policy",
+        "terms": "Terms of use"
+      }
     }
   },
   "Restaurant": {
@@ -42,7 +141,8 @@
       "reviews": "Reviews",
       "payments": "Payments",
       "audit": "Audit log",
-      "stats": "Statistics"
+      "stats": "Statistics",
+      "messages": "Messages"
     },
     "home": {
       "title": "Platform admin"
@@ -126,6 +226,38 @@
       "rateLimited": "Too many attempts. Please wait a minute and try again.",
       "generic": "Something went wrong. Please try again.",
       "accountSuspended": "This account is suspended. Contact Spot support if you think it's a mistake."
+    },
+    "audience": {
+      "guest": "For guests",
+      "restaurant": "For restaurants"
+    },
+    "restaurant": {
+      "signIn": {
+        "title": "Sign in to your restaurant",
+        "subtitle": "Orders, bookings and your menu are waiting."
+      },
+      "signUp": {
+        "title": "Create your restaurant account",
+        "subtitle": "Step 1 of 6. Next you'll add your restaurant. Free for the first year."
+      }
+    },
+    "switch": {
+      "toGuest": "Not a restaurant? <link>Continue as a guest</link>",
+      "toRestaurant": "Own a restaurant? <link>Continue as a restaurant</link>"
+    },
+    "panel": {
+      "guest": {
+        "title": "Good food, less waiting",
+        "find": "Find places near you and book a table",
+        "order": "Scan the QR code and order from your table",
+        "pay": "See and split your bill any time"
+      },
+      "restaurant": {
+        "title": "Your restaurant, online in an afternoon",
+        "menu": "QR menu in Armenian and English",
+        "kitchen": "Live orders for waiters and the kitchen",
+        "bookings": "Online bookings with no double bookings"
+      }
     }
   },
   "RestaurantStatus": {
@@ -188,7 +320,9 @@
       "ratingRequired": "Choose 1 to 5 stars.",
       "commentTooLong": "Keep it under 2000 characters.",
       "emailRequired": "Leave your email address.",
-      "phoneTaken": "This phone number belongs to another account."
+      "phoneTaken": "This phone number belongs to another account.",
+      "messageTooShort": "Write at least 10 characters.",
+      "messageTooLong": "The message is too long."
     }
   },
   "Onboarding": {
@@ -223,9 +357,6 @@
       "submit": "Add location"
     },
     "setup": {
-      "checklistTitle": "Before you submit",
-      "stepProfile": "Restaurant created",
-      "stepLocation": "Add at least one location",
       "locationsTitle": "Locations",
       "needsLocation": "Add a location to submit your restaurant for review.",
       "pending": "Thanks! Your restaurant is being reviewed. We'll let you know once it's approved.",
@@ -234,6 +365,40 @@
     "submit": {
       "button": "Submit for review",
       "success": "Submitted for review."
+    },
+    "guide": {
+      "title": "Getting started",
+      "subtitle": "Follow the steps — you can change everything later.",
+      "progress": "{done} of {total} done",
+      "done": "done",
+      "next": "next step",
+      "todo": "to do",
+      "steps": {
+        "account": {
+          "title": "Create your account",
+          "hint": "Your personal login."
+        },
+        "restaurant": {
+          "title": "Restaurant details",
+          "hint": "Name, phone and a short description."
+        },
+        "location": {
+          "title": "Add the address",
+          "hint": "Where guests find you, with opening hours."
+        },
+        "menu": {
+          "title": "Add your dishes",
+          "hint": "Categories, dishes, prices and photos."
+        },
+        "tables": {
+          "title": "Print QR codes",
+          "hint": "One code per table, so guests can order."
+        },
+        "review": {
+          "title": "Submit for review",
+          "hint": "We check it quickly, then guests can find you."
+        }
+      }
     }
   },
   "Cuisines": {
@@ -1419,5 +1584,253 @@
     "restaurant": "Restaurant",
     "noActivity": "No activity in this period.",
     "definition": "A restaurant is active with a QR scan, order, reservation, menu change or review in the period. Customers are counted once across scans, orders and bookings. Days in Yerevan time."
+  },
+  "About": {
+    "eyebrow": "About us",
+    "title": "Good food, less waiting",
+    "subtitle": "Spot connects hungry people with the restaurants of Armenia — and gives those restaurants simple tools to serve them well.",
+    "story": {
+      "title": "Why we built Spot",
+      "p1": "We love going out to eat, but too often the evening goes to waiting: for a free table, for the menu, for the waiter, for the bill. Restaurants feel the same pain from the other side — paper orders, phone bookings and no time to look at the numbers.",
+      "p2": "Spot puts the whole visit in one simple app. Guests find a place, book, order from the table and pay. Restaurants get a dashboard for the menu, orders, kitchen, reservations and bills — made for local businesses, in Armenian and English."
+    },
+    "values": {
+      "title": "What we care about",
+      "simple": {
+        "title": "Simple",
+        "text": "If a guest or a waiter needs instructions, we haven't done our job. Every screen is built for a phone and a busy evening."
+      },
+      "local": {
+        "title": "Local",
+        "text": "Made in Armenia for Armenian restaurants: Armenian first, prices in dram, and support that answers in your language."
+      },
+      "fair": {
+        "title": "Fair",
+        "text": "Reviews come only from real visits, prices are always the restaurant's own, and your data stays yours."
+      }
+    },
+    "who": {
+      "title": "Who Spot is for",
+      "guests": {
+        "title": "Guests",
+        "text": "Anyone who wants to find a good place, skip the queue and enjoy the meal. No app to install — it works in the browser.",
+        "cta": "Find a restaurant"
+      },
+      "restaurants": {
+        "title": "Restaurants, cafés and bars",
+        "text": "From a small coffee shop to a restaurant with several branches: one account, all locations, the whole team.",
+        "cta": "Add your restaurant"
+      }
+    },
+    "cta": {
+      "title": "Let's talk",
+      "text": "Questions, ideas or want to partner with us? We read every message.",
+      "button": "Contact us"
+    }
+  },
+  "Faq": {
+    "title": "Questions & answers",
+    "subtitle": "Quick answers for guests and restaurants.",
+    "guests": {
+      "title": "For guests",
+      "items": {
+        "account": {
+          "q": "Do I need an account or an app?",
+          "a": "No. Scan the QR code and order in your browser. An account is optional — it keeps your bookings, favourites and reviews in one place."
+        },
+        "qr": {
+          "q": "How does ordering from the table work?",
+          "a": "Each table has its own QR code. Scan it with your phone camera, choose dishes from the menu and send the order. The kitchen and your waiter see it at once."
+        },
+        "pay": {
+          "q": "How can I pay?",
+          "a": "Open your bill at any time from the table page. Depending on the restaurant, you can pay online or to the waiter by card or cash."
+        },
+        "split": {
+          "q": "Can we split the bill?",
+          "a": "Yes. Each guest can pay for their own items, or you can split the total in equal parts."
+        },
+        "reserve": {
+          "q": "How do I book a table?",
+          "a": "Open the restaurant's page, press \"Reserve a table\", choose the date, time and number of people. You'll get a confirmation, and you can cancel from your bookings."
+        },
+        "review": {
+          "q": "Who can leave a review?",
+          "a": "Only people who really visited — after a completed booking or a table visit. That keeps the reviews honest."
+        }
+      }
+    },
+    "restaurants": {
+      "title": "For restaurants",
+      "items": {
+        "cost": {
+          "q": "How much does Spot cost?",
+          "a": "Spot is free for the first year. We'll announce pricing well in advance, before any charges start."
+        },
+        "start": {
+          "q": "How do we get started?",
+          "a": "Create an account, add your restaurant and its locations, build the menu and print the table QR codes. After a quick review by our team, your restaurant goes live."
+        },
+        "pos": {
+          "q": "Does it work with our POS system?",
+          "a": "Spot can send orders to your cash register system. 1C is supported now and more systems are on the way — contact us to discuss yours."
+        },
+        "staff": {
+          "q": "Can my whole team use it?",
+          "a": "Yes. Invite managers, waiters, kitchen staff and cashiers — each role sees only what it needs."
+        },
+        "payouts": {
+          "q": "Who sets the prices and menu?",
+          "a": "You do. Prices, dishes and availability are always yours, and orders keep the price the guest saw."
+        },
+        "languages": {
+          "q": "Which languages are supported?",
+          "a": "Armenian and English, for both guests and staff. Guests can switch the language at any time."
+        }
+      }
+    },
+    "more": "Still have a question? <link>Write to us</link>."
+  },
+  "Contact": {
+    "title": "Contact us",
+    "subtitle": "Guest, restaurant or partner — tell us what you need and we'll get back to you.",
+    "details": {
+      "title": "Reach us",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "hours": "Support hours",
+      "hoursValue": "Mon–Sat, {hours}"
+    },
+    "form": {
+      "title": "Send us a message",
+      "topic": "I am writing as",
+      "topics": {
+        "guest": "A guest",
+        "restaurant": "A restaurant",
+        "partnership": "A partner",
+        "other": "Something else"
+      },
+      "name": "Your name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send message",
+      "sentTitle": "Thank you! Your message is on its way.",
+      "sentText": "We usually answer within one working day.",
+      "another": "Send another message"
+    }
+  },
+  "Legal": {
+    "updated": "Last updated: {date}",
+    "contents": "Contents"
+  },
+  "Privacy": {
+    "title": "Privacy policy",
+    "intro": "This policy explains what personal data {company} (\"Spot\", \"we\") collects when you use Spot, why, and what you can do about it.",
+    "sections": {
+      "who": {
+        "title": "Who we are",
+        "body": "Spot is operated by {company}. For any privacy question or request, write to {email}."
+      },
+      "collect": {
+        "title": "What we collect",
+        "body": "• Account data: name, email, phone (optional) and preferred language.\n• Visit data: reservations, orders, bills and reviews you make.\n• Technical data: device and browser type, IP address and the pages you open, to keep the service safe and working.\n• Messages you send us through the contact form."
+      },
+      "use": {
+        "title": "How we use it",
+        "body": "To run the service (bookings, orders, bills), to send you confirmations and notifications, to prevent fraud and abuse, to answer your messages, and to improve Spot using aggregated statistics. We do not sell your personal data."
+      },
+      "restaurants": {
+        "title": "What restaurants see",
+        "body": "When you book or order, the restaurant receives what it needs to serve you: your name, party size, contact details for the booking, and your orders. Each restaurant sees only its own guests."
+      },
+      "payments": {
+        "title": "Payments",
+        "body": "Online payments are processed by a licensed payment provider. Spot never sees or stores your full card number."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "We use only the cookies needed to sign you in, remember your table and language, and keep the service secure. We don't use advertising cookies."
+      },
+      "keep": {
+        "title": "How long we keep data",
+        "body": "We keep account data while your account exists. Financial records (orders, bills, payments) are kept as long as the law requires, even after an account is closed."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You can see and change your profile in your account, ask us for a copy of your data, ask us to correct or delete it, or withdraw consent — write to {email}. You may also complain to the personal data protection authority of Armenia."
+      },
+      "children": {
+        "title": "Children",
+        "body": "Spot is not intended for children under 16 to create accounts on their own."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "body": "We may update this policy. We'll show the new date at the top, and tell you about important changes in the app or by email."
+      }
+    }
+  },
+  "Terms": {
+    "title": "Terms of use",
+    "intro": "These terms apply when you use Spot, the service operated by {company}. By using Spot you agree to them.",
+    "sections": {
+      "accept": {
+        "title": "The service",
+        "body": "Spot helps guests find restaurants, book tables, order and pay, and helps restaurants manage their menu, orders, reservations and bills. Spot is a platform: the food and the service at the table are provided by the restaurant."
+      },
+      "accounts": {
+        "title": "Accounts",
+        "body": "Give true information and keep your password safe. You are responsible for what happens in your account. We may suspend accounts that break these terms."
+      },
+      "guests": {
+        "title": "Guests",
+        "body": "Orders and bookings are agreements between you and the restaurant. Please come on time or cancel a booking you can't keep. Deposits and cancellations follow the rules the restaurant shows when you book."
+      },
+      "restaurants": {
+        "title": "Restaurants",
+        "body": "Restaurants are responsible for their menu, prices, availability, food quality and legal requirements such as receipts and taxes. Prices shown on Spot must match the prices charged in the restaurant."
+      },
+      "payments": {
+        "title": "Prices and payments",
+        "body": "Prices are set by the restaurant and shown in Armenian dram. Online payments go through a licensed payment provider. Refunds are handled by the restaurant according to its rules and the law."
+      },
+      "content": {
+        "title": "Reviews and content",
+        "body": "Reviews must be honest and about a real visit. No insults, personal data of others, spam or advertising. We may hide content that breaks these rules. You keep rights to your content and allow us to show it on Spot."
+      },
+      "conduct": {
+        "title": "Fair use",
+        "body": "Don't misuse the service: no attempts to break security, scrape data, place fake orders or bookings, or impersonate others."
+      },
+      "liability": {
+        "title": "Liability",
+        "body": "We work hard to keep Spot available and correct, but the service is provided as is. To the extent the law allows, we are not liable for indirect losses, or for the food and service provided by restaurants."
+      },
+      "ending": {
+        "title": "Ending use",
+        "body": "You can stop using Spot and close your account at any time. We may end access for accounts that seriously or repeatedly break these terms."
+      },
+      "law": {
+        "title": "Law and contact",
+        "body": "These terms are governed by the laws of the Republic of Armenia. Questions? Write to {email}."
+      }
+    }
+  },
+  "AdminMessages": {
+    "title": "Contact messages",
+    "filter": "Show messages",
+    "tabs": {
+      "new": "New",
+      "handled": "Handled"
+    },
+    "empty": {
+      "new": "No new messages.",
+      "handled": "No handled messages yet."
+    },
+    "markHandled": "Mark handled",
+    "markHandledLabel": "Mark the message from {name} handled",
+    "reopen": "Reopen",
+    "reopenLabel": "Reopen the message from {name}",
+    "done": "Saved."
   }
 }

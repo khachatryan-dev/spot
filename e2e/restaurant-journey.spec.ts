@@ -37,7 +37,7 @@ test("a restaurant from signing in to serving its first order", async ({ page, b
   await expect(page).toHaveURL("/");
 
   await page.goto("/dashboard");
-  await expect(page).toHaveURL("/login?next=%2Fdashboard");
+  await expect(page).toHaveURL("/login?next=%2Fdashboard&for=restaurant");
   await page.getByLabel("Էլ. փոստ").fill(ownerEmail);
   await page.getByLabel("Գաղտնաբառ").fill(PASSWORD);
   await page.getByRole("button", { name: "Մուտք գործել" }).click();

@@ -31,6 +31,10 @@ export default function proxy(request: NextRequest) {
   if (isProtectedPath(path) && !getSessionCookie(request, { cookiePrefix: "spot" })) {
     const login = new URL(localizePath("/login", locale), request.url);
     login.searchParams.set("next", `${pathname}${search}`);
+    // Dashboard visitors see the restaurant version of the sign-in page.
+    if (path === "/dashboard" || path.startsWith("/dashboard/")) {
+      login.searchParams.set("for", "restaurant");
+    }
     response = NextResponse.redirect(login);
   } else {
     // next-intl forwards the incoming request headers, so add the CSP there.
