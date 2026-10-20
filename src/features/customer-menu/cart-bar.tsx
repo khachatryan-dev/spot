@@ -85,13 +85,17 @@ export function CartBar() {
       <div className="h-20" aria-hidden />
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md p-3">
         <Button
-          className="h-12 w-full justify-between rounded-xl px-4 text-base shadow-lg"
+          className="h-14 w-full justify-between rounded-2xl bg-gradient-to-r from-orange-700 to-rose-600 px-4 text-base shadow-xl shadow-orange-700/30 hover:from-orange-800 hover:to-rose-700 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
           onClick={() => setOpen(true)}
         >
           <span className="flex items-center gap-2">
             <ShoppingBag aria-hidden />
             {t("view")}
-            <span className="rounded-full bg-primary-foreground/20 px-2 text-sm">
+            {/* Re-keyed so the count pops each time something is added. */}
+            <span
+              key={cart.itemCount}
+              className="grid min-w-6 place-items-center rounded-full bg-white px-1.5 text-sm font-bold text-orange-800 motion-safe:animate-in motion-safe:zoom-in-50 dark:bg-card dark:text-orange-300"
+            >
               {cart.itemCount}
             </span>
           </span>

@@ -1,6 +1,7 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CreditCard } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -144,7 +145,7 @@ export default async function AdminPaymentsPage({
       </section>
 
       {rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        <EmptyState icon={CreditCard}>{t("empty")}</EmptyState>
       ) : (
         <ul className="flex flex-col divide-y rounded-2xl border" aria-label={t("listLabel")}>
           {rows.map((p) => (

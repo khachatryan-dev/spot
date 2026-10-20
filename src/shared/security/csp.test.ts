@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildCsp, createNonce, MAP_TILES, SECURITY_HEADERS } from "./csp";
+import { MAP_TILES, SECURITY_HEADERS, buildCsp, createNonce, nonceFromCsp } from "./csp";
 
 const directive = (csp: string, name: string) =>
   csp.split("; ").find((d) => d.startsWith(`${name} `));
@@ -71,5 +71,15 @@ describe("SECURITY_HEADERS", () => {
         "Permissions-Policy",
       ]),
     );
+  });
+});
+
+describe("nonceFromCsp", () => {
+  it("reads back the nonce of a built policy", () => {
+    expect(nonceFromCsp(buildCsp({ nonce: "abc+/=", isDev: false, realtime: false }))).toBe(
+      "abc+/=",
+    );
+    expect(nonceFromCsp("default-src 'self'")).toBeUndefined();
+    expect(nonceFromCsp(null)).toBeUndefined();
   });
 });

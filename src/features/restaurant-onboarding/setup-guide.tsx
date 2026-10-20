@@ -44,7 +44,7 @@ export async function SetupGuide({
   return (
     <section
       aria-labelledby="setup-guide"
-      className="flex flex-col gap-4 rounded-3xl bg-gradient-to-br from-emerald-50 to-amber-50 p-5 ring-1 ring-emerald-100 sm:p-6"
+      className="flex flex-col gap-4 rounded-3xl bg-gradient-to-br from-emerald-50 to-amber-50 p-5 ring-1 ring-emerald-100 sm:p-6 dark:from-emerald-950/40 dark:to-amber-950/40 dark:ring-emerald-900/50"
     >
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div className="flex flex-col gap-1">
@@ -53,7 +53,7 @@ export async function SetupGuide({
           </h2>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <p className="text-sm font-medium text-emerald-800">
+        <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
           {t("progress", { done: doneCount, total: STEPS.length })}
         </p>
       </div>
@@ -63,7 +63,7 @@ export async function SetupGuide({
         aria-valuemin={0}
         aria-valuemax={STEPS.length}
         aria-valuenow={doneCount}
-        className="h-2 overflow-hidden rounded-full bg-white"
+        className="h-2 overflow-hidden rounded-full bg-white dark:bg-card"
       >
         <div
           className="h-full rounded-full bg-emerald-600 transition-[width] duration-700"
@@ -82,7 +82,7 @@ export async function SetupGuide({
                     ? "bg-emerald-600 text-white"
                     : isCurrent
                       ? "bg-orange-700 text-white"
-                      : "bg-white text-muted-foreground ring-1 ring-border",
+                      : "bg-white text-muted-foreground ring-1 ring-border dark:bg-card",
                 )}
               >
                 {done[step] ? <Check className="size-4" aria-hidden /> : index + 1}
@@ -107,14 +107,14 @@ export async function SetupGuide({
               key={step}
               aria-current={isCurrent ? "step" : undefined}
               className={cn(
-                "rounded-2xl bg-white/80",
+                "rounded-2xl bg-white/80 dark:bg-card/80",
                 isCurrent && "ring-2 ring-orange-300 motion-safe:animate-in motion-safe:fade-in",
               )}
             >
               {link && !done[step] ? (
                 <Link
                   href={link}
-                  className="flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-white"
+                  className="flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-white dark:hover:bg-muted"
                 >
                   {content}
                   <ChevronRight className="size-4 text-muted-foreground" aria-hidden />

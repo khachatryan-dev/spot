@@ -1,6 +1,7 @@
-import { ChevronLeft, ChevronRight, CreditCard, Phone, Users } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, CreditCard, Phone, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -176,7 +177,7 @@ export default async function ReservationsPage({
       </div>
 
       {reservations.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        <EmptyState icon={CalendarDays}>{t("empty")}</EmptyState>
       ) : (
         <ul className="flex flex-col gap-3" aria-label={t("listLabel")}>
           {reservations.map((r) => (

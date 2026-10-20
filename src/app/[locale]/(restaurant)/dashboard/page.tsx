@@ -18,7 +18,7 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]/das
   if (restaurants.length === 0) {
     return (
       <div className="flex max-w-3xl flex-col gap-6">
-        <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 p-8 text-center ring-1 ring-orange-100 sm:p-10">
+        <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 p-8 text-center ring-1 ring-orange-100 sm:p-10 dark:from-orange-950/40 dark:via-amber-950/40 dark:to-rose-950/40 dark:ring-orange-900/50">
           <span className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-500/20 motion-safe:animate-in motion-safe:zoom-in-90">
             <Store className="size-7" aria-hidden />
           </span>

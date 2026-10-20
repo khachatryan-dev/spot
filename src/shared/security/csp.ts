@@ -76,3 +76,8 @@ export const SECURITY_HEADERS = [
     value: "camera=(), microphone=(), payment=(), usb=(), geolocation=(self), browsing-topics=()",
   },
 ];
+
+/** The nonce inside a CSP header built above, so pages can pass it to their own inline scripts. */
+export function nonceFromCsp(csp: string | null | undefined): string | undefined {
+  return csp?.match(/'nonce-([^']+)'/)?.[1];
+}

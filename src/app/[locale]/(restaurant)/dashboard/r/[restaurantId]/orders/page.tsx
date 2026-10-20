@@ -1,5 +1,7 @@
+import { ClipboardList } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { LiveRefresh } from "@/features/ordering/live-refresh";
 import { type BoardOrder, OrderBoard } from "@/features/order-board/order-board";
 import { RequestsPanel } from "@/features/table-requests/requests-panel";
@@ -77,7 +79,7 @@ export default async function OrdersPage({
         restaurantId={restaurantId}
         requests={data.requests.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }))}
       />
-      {data.open.length === 0 && <p className="text-sm text-muted-foreground">{t("empty")}</p>}
+      {data.open.length === 0 && <EmptyState icon={ClipboardList}>{t("empty")}</EmptyState>}
       <OrderBoard
         orders={data.open.map(toBoard)}
         restaurantId={restaurantId}

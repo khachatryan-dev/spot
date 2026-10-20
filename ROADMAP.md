@@ -189,6 +189,10 @@ Keep the summary short.
 ### ✅ Phase 15 — Brand & public pages — ≈ 300k tokens
 - [x] Warm orange theme, landing page with guest / restaurant entry points and reduced-motion-safe animations, About, Contact (form → `contact_messages`, admin `/admin/messages`), FAQ, Privacy, Terms, footer and sitemap `~300k` — company details are placeholders in `src/shared/config/company.ts`; legal texts need a lawyer's review
 - [x] Owner onboarding `~200k` — restaurant sign-in / sign-up (`?for=restaurant`, branded guest vs restaurant panels, switch links), new owners land on "Create your restaurant", 6-step setup guide with progress on the dashboard
+- [x] Guest table menu polish `~150k` — colourful table header with orders / bill buttons, dish cards with add cue and photo placeholder, self-centring category chips, livelier cart bar, order progress tracker, friendlier "scan the QR" and "menu closed" screens
+- [x] Dashboard polish `~120k` — warm sidebar with logo and avatar, restaurant header with initial badge, pill tabs with icons, coloured restaurant status badges, shared `EmptyState` on orders, kitchen, reservations, menu, tables, reviews and locations
+- [x] Admin polish `~80k` — header with logo and Admin chip, pill sections with icons and active state (`AdminNav`), pill filters, `EmptyState` on restaurants, payments, messages, audit and reviews, stat cards
+- [x] Dark mode `~150k` — `next-themes` (follows the device, CSP nonce passed), sun/moon switch in auth, dashboard and admin headers and the public footer, dark partners for the brand colours; QR and print pages stay light
 
 ---
 

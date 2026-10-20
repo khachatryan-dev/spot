@@ -1,5 +1,7 @@
+import { ScrollText } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { guardPage, requirePlatformPermission } from "@/server/auth/guards";
@@ -44,9 +46,7 @@ export default async function AdminAuditPage({
         )}
       </div>
       {entries.length === 0 ? (
-        <p className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
-          {t("empty")}
-        </p>
+        <EmptyState icon={ScrollText}>{t("empty")}</EmptyState>
       ) : (
         <div className="overflow-x-auto rounded-xl border">
           <table className="w-full text-sm">

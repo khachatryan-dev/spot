@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { QrCode } from "lucide-react";
+import { ClipboardList, QrCode, ReceiptText, UtensilsCrossed } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { MenuView } from "@/features/customer-menu/menu-view";
@@ -33,18 +33,23 @@ export default async function TablePage({ params }: PageProps<"/[locale]/table">
     const visitor = await getCustomer();
     const toRate = visitor ? await listReviewOpportunities(visitor) : [];
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
-        <QrCode className="size-12 text-muted-foreground" aria-hidden />
-        <h1 className="text-xl font-semibold">{t("noSessionTitle")}</h1>
-        <p className="text-sm text-muted-foreground">{t("noSessionDescription")}</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
+        <span className="grid size-20 place-items-center rounded-3xl bg-gradient-to-br from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-500/25 motion-safe:animate-in motion-safe:duration-500 motion-safe:zoom-in-90">
+          <QrCode className="size-10" aria-hidden />
+        </span>
+        <h1 className="text-2xl font-bold">{t("noSessionTitle")}</h1>
+        <p className="max-w-xs text-muted-foreground">{t("noSessionDescription")}</p>
         {toRate.length > 0 && (
           <Link
             href="/reviews"
-            className="mt-4 rounded-xl border px-4 py-3 text-sm font-medium hover:bg-muted"
+            className="mt-2 rounded-xl border bg-card px-4 py-3 text-sm font-medium shadow-sm hover:bg-muted"
           >
             {t("rateVisit", { restaurant: toRate[0]!.restaurantName })}
           </Link>
         )}
+        <Link href="/restaurants" className="text-sm font-medium text-primary hover:underline">
+          {t("findRestaurants")}
+        </Link>
       </div>
     );
   }
@@ -58,29 +63,35 @@ export default async function TablePage({ params }: PageProps<"/[locale]/table">
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <header className="flex flex-col gap-1 rounded-2xl bg-muted/40 p-4">
-        <span className="text-sm text-muted-foreground">
+      <header className="relative isolate flex flex-col gap-1 overflow-hidden rounded-3xl bg-gradient-to-br from-orange-700 to-rose-600 p-5 text-white shadow-lg shadow-orange-700/20">
+        <UtensilsCrossed
+          aria-hidden
+          className="absolute -right-4 -bottom-4 -z-10 size-28 rotate-12 text-white/10"
+        />
+        <span className="text-sm text-white">
           {session.restaurant.name} · {session.location.name}
         </span>
-        <h1 className="text-2xl font-semibold">{t("table", { number: session.table.number })}</h1>
-        <span className="text-xs text-muted-foreground">
+        <h1 className="text-3xl font-bold">{t("table", { number: session.table.number })}</h1>
+        <span className="self-start rounded-full bg-black/15 px-2.5 py-0.5 text-xs font-medium">
           {t("sessionCode", { code: session.code })}
         </span>
         {myOrders.length > 0 && (
-          <Link
-            href="/table/orders"
-            className="mt-1 self-start text-sm font-medium underline-offset-4 hover:underline"
-          >
-            {t("myOrders", { count: myOrders.length })}
-          </Link>
-        )}
-        {myOrders.length > 0 && (
-          <Link
-            href="/table/bill"
-            className="self-start text-sm font-medium underline-offset-4 hover:underline"
-          >
-            {t("bill")}
-          </Link>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link
+              href="/table/orders"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-sm font-semibold text-orange-800 shadow-sm hover:bg-orange-50 dark:bg-card dark:text-orange-300 dark:hover:bg-orange-950/40"
+            >
+              <ClipboardList className="size-4" aria-hidden />
+              {t("myOrders", { count: myOrders.length })}
+            </Link>
+            <Link
+              href="/table/bill"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-black/15 px-3 py-2 text-sm font-semibold hover:bg-black/25"
+            >
+              <ReceiptText className="size-4" aria-hidden />
+              {t("bill")}
+            </Link>
+          </div>
         )}
       </header>
       <RequestButtons open={openRequests} />

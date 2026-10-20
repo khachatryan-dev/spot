@@ -43,12 +43,28 @@ const RESTAURANT_FEATURES = [
 
 /** Food icons drifting around the hero (decorative). */
 const FLOATING = [
-  { Icon: Pizza, className: "top-10 left-[6%] bg-orange-100 text-orange-600", delay: "0s" },
-  { Icon: Coffee, className: "top-28 right-[8%] bg-amber-100 text-amber-700", delay: "1.2s" },
-  { Icon: Salad, className: "bottom-24 left-[10%] bg-emerald-100 text-emerald-700", delay: "2s" },
+  {
+    Icon: Pizza,
+    className:
+      "top-10 left-[6%] bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400",
+    delay: "0s",
+  },
+  {
+    Icon: Coffee,
+    className:
+      "top-28 right-[8%] bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300",
+    delay: "1.2s",
+  },
+  {
+    Icon: Salad,
+    className:
+      "bottom-24 left-[10%] bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300",
+    delay: "2s",
+  },
   {
     Icon: IceCreamCone,
-    className: "right-[14%] bottom-10 bg-rose-100 text-rose-600",
+    className:
+      "right-[14%] bottom-10 bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400",
     delay: "0.6s",
   },
 ] as const;
@@ -64,11 +80,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-orange-50 via-amber-50/60 to-background">
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-orange-50 via-amber-50/60 to-background dark:from-orange-950/40 dark:via-amber-950/40">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-24 -left-24 size-80 rounded-full bg-orange-300/40 blur-3xl motion-safe:animate-blob" />
-          <div className="absolute top-20 -right-20 size-72 rounded-full bg-rose-300/30 blur-3xl [animation-delay:-6s] motion-safe:animate-blob" />
-          <div className="absolute -bottom-20 left-1/3 size-72 rounded-full bg-emerald-200/40 blur-3xl [animation-delay:-12s] motion-safe:animate-blob" />
+          <div className="absolute -top-24 -left-24 size-80 rounded-full bg-orange-300/40 blur-3xl motion-safe:animate-blob dark:bg-orange-500/15" />
+          <div className="absolute top-20 -right-20 size-72 rounded-full bg-rose-300/30 blur-3xl [animation-delay:-6s] motion-safe:animate-blob dark:bg-rose-500/15" />
+          <div className="absolute -bottom-20 left-1/3 size-72 rounded-full bg-emerald-200/40 blur-3xl [animation-delay:-12s] motion-safe:animate-blob dark:bg-emerald-500/15" />
           {FLOATING.map(({ Icon, className, delay }) => (
             <span
               key={delay}
@@ -81,7 +97,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         </div>
 
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 pt-16 pb-12 text-center sm:pt-24">
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/70 px-3 py-1 text-xs font-medium text-orange-800 shadow-sm motion-safe:animate-in motion-safe:duration-700 motion-safe:fade-in">
+          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/70 px-3 py-1 text-xs font-medium text-orange-800 shadow-sm motion-safe:animate-in motion-safe:duration-700 motion-safe:fade-in dark:border-orange-800 dark:bg-card/70 dark:text-orange-300">
             <UtensilsCrossed className="size-3.5" aria-hidden />
             {t("badge")}
           </span>
@@ -95,7 +111,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             action={getPathname({ href: "/restaurants", locale })}
             role="search"
             aria-label={t("searchLabel")}
-            className="flex w-full max-w-lg gap-2 rounded-2xl bg-white p-2 shadow-lg ring-1 shadow-orange-900/5 ring-orange-100 motion-safe:animate-in motion-safe:delay-300 motion-safe:duration-700 motion-safe:fill-mode-backwards motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
+            className="flex w-full max-w-lg gap-2 rounded-2xl bg-white p-2 shadow-lg ring-1 shadow-orange-900/5 ring-orange-100 motion-safe:animate-in motion-safe:delay-300 motion-safe:duration-700 motion-safe:fill-mode-backwards motion-safe:fade-in motion-safe:slide-in-from-bottom-4 dark:bg-card dark:ring-orange-900/50"
           >
             <label htmlFor="home-q" className="sr-only">
               {t("searchLabel")}
@@ -135,7 +151,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               <div className="mt-auto flex flex-wrap gap-2">
                 <Button
                   size="lg"
-                  className="h-auto min-h-10 rounded-xl bg-white px-4 py-2 whitespace-normal text-orange-800 hover:bg-orange-50"
+                  className="h-auto min-h-10 rounded-xl bg-white px-4 py-2 whitespace-normal text-orange-800 hover:bg-orange-50 dark:bg-card dark:text-orange-300 dark:hover:bg-orange-950/40"
                   render={<Link href="/restaurants" />}
                 >
                   {t("doors.guest.cta")}
@@ -164,7 +180,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               <div className="mt-auto flex flex-wrap gap-2">
                 <Button
                   size="lg"
-                  className="h-auto min-h-10 max-w-full rounded-xl bg-white px-4 py-2 whitespace-normal text-emerald-800 hover:bg-emerald-50"
+                  className="h-auto min-h-10 max-w-full rounded-xl bg-white px-4 py-2 whitespace-normal text-emerald-800 hover:bg-emerald-50 dark:bg-card dark:text-emerald-300 dark:hover:bg-emerald-950/40"
                   render={<Link href="/register?for=restaurant" />}
                 >
                   {t("ctaRestaurants")}
@@ -203,7 +219,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               className="reveal relative flex flex-col gap-3 rounded-3xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="flex items-center justify-between">
-                <span className="grid size-12 place-items-center rounded-2xl bg-orange-100 text-orange-700">
+                <span className="grid size-12 place-items-center rounded-2xl bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
                   <Icon className="size-6" aria-hidden />
                 </span>
                 <span className="grid size-7 place-items-center rounded-full bg-orange-700 text-xs font-bold text-white">
@@ -227,11 +243,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <section
         id="restaurants"
         aria-labelledby="restaurants-title"
-        className="scroll-mt-4 bg-gradient-to-b from-emerald-50 to-background"
+        className="scroll-mt-4 bg-gradient-to-b from-emerald-50 to-background dark:from-emerald-950/40"
       >
         <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[2fr_3fr] lg:items-center">
           <div className="reveal flex flex-col gap-4">
-            <p className="text-sm font-semibold text-emerald-800">{t("restaurants.eyebrow")}</p>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+              {t("restaurants.eyebrow")}
+            </p>
             <h2 id="restaurants-title" className="text-3xl font-bold tracking-tight text-balance">
               {t("restaurants.title")}
             </h2>
@@ -247,7 +265,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               </Button>
               <Link
                 href="/contact"
-                className="text-sm font-medium text-emerald-800 hover:underline"
+                className="text-sm font-medium text-emerald-800 hover:underline dark:text-emerald-300"
               >
                 {t("restaurants.talk")}
               </Link>
@@ -259,7 +277,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 key={key}
                 className="reveal flex gap-4 rounded-3xl border bg-card p-5 shadow-sm transition-transform motion-safe:hover:-translate-y-0.5"
               >
-                <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-800">
+                <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
                   <Icon className="size-5" aria-hidden />
                 </span>
                 <div className="flex flex-col gap-1">
@@ -276,14 +294,14 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
       {/* Closing call to action */}
       <section className="mx-auto w-full max-w-6xl px-4 py-16">
-        <div className="reveal relative isolate flex flex-col items-center gap-5 overflow-hidden rounded-3xl bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 px-6 py-12 text-center">
+        <div className="reveal relative isolate flex flex-col items-center gap-5 overflow-hidden rounded-3xl bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 px-6 py-12 text-center dark:from-amber-900/40 dark:via-orange-900/40 dark:to-rose-900/40">
           <CookingPot
             aria-hidden
-            className="absolute -right-6 -bottom-6 -z-10 size-40 text-orange-200 motion-safe:animate-float"
+            className="absolute -right-6 -bottom-6 -z-10 size-40 text-orange-200 motion-safe:animate-float dark:text-orange-900"
           />
           <MessageSquareHeart
             aria-hidden
-            className="absolute -top-4 -left-4 -z-10 size-28 text-rose-200 [animation-delay:-3s] motion-safe:animate-float"
+            className="absolute -top-4 -left-4 -z-10 size-28 text-rose-200 [animation-delay:-3s] motion-safe:animate-float dark:text-rose-900"
           />
           <h2 className="max-w-xl text-2xl font-bold tracking-tight text-balance sm:text-3xl">
             {t("final.title")}
@@ -300,7 +318,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             <Button
               size="lg"
               variant="outline"
-              className="h-10 rounded-xl bg-white/70 px-5"
+              className="h-10 rounded-xl bg-white/70 px-5 dark:bg-card/70"
               render={<Link href="/login?for=restaurant" />}
             >
               {t("final.restaurantCta")}

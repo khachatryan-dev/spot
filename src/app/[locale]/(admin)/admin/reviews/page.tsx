@@ -1,5 +1,7 @@
+import { MessageSquare, ShieldCheck } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,7 +96,7 @@ export default async function AdminReviewsPage({
           {t("reportedTitle", { count: reported.length })}
         </h2>
         {reported.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("noReports")}</p>
+          <EmptyState icon={ShieldCheck}>{t("noReports")}</EmptyState>
         ) : (
           <ul className="flex flex-col gap-3">{reported.map((review) => item(review, true))}</ul>
         )}
@@ -104,7 +106,7 @@ export default async function AdminReviewsPage({
           {t("recentTitle")}
         </h2>
         {recent.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("none")}</p>
+          <EmptyState icon={MessageSquare}>{t("none")}</EmptyState>
         ) : (
           <ul className="flex flex-col gap-3">{recent.map((review) => item(review, false))}</ul>
         )}

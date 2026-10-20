@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 import type { CustomerMenu } from "@/server/services/customer-menu-service";
 import { type MenuItemForCart, resolveCart } from "@/shared/domain/cart";
@@ -41,14 +41,7 @@ export function CartScope({
   );
 }
 
-const subscribe = () => () => {};
-/** False during server render and hydration, so persisted carts don't cause mismatches. */
-export const useHydrated = () =>
-  useSyncExternalStore(
-    subscribe,
-    () => true,
-    () => false,
-  );
+export { useHydrated } from "@/components/shared/use-hydrated";
 
 export function useCart() {
   const context = useContext(CartContext);

@@ -87,7 +87,9 @@ export async function AuthCard({
           <span
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold",
-              restaurant ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800",
+              restaurant
+                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+                : "bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300",
             )}
           >
             <Icon className="size-3.5" aria-hidden />

@@ -8,7 +8,11 @@
     "language": "Language",
     "comingSoon": "Coming soon",
     "comingSoonDescription": "This section is being built.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "theme": {
+      "toDark": "Switch to dark mode",
+      "toLight": "Switch to light mode"
+    }
   },
   "Marketing": {
     "nav": {
@@ -827,7 +831,8 @@
     "busyDescription": "Please wait a minute and scan the code again.",
     "myOrders": "My orders ({count})",
     "bill": "Bill",
-    "rateVisit": "Rate your visit to {restaurant}"
+    "rateVisit": "Rate your visit to {restaurant}",
+    "findRestaurants": "Find a restaurant"
   },
   "CustomerMenu": {
     "categories": "Menu sections",
@@ -893,7 +898,14 @@
     "cancel": "Cancel order",
     "cancelConfirm": "Cancel order #{number}?",
     "cancelled": "Order cancelled.",
-    "reasonLabel": "Reason: {reason}"
+    "reasonLabel": "Reason: {reason}",
+    "progress": {
+      "sent": "Sent",
+      "accepted": "Taken",
+      "preparing": "Cooking",
+      "ready": "Done",
+      "served": "At table"
+    }
   },
   "OrderBoard": {
     "columns": {

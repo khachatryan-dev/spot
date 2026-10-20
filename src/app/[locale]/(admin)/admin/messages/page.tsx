@@ -1,5 +1,7 @@
+import { Inbox } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { MessageStatusButton } from "@/features/admin-messages/message-status-button";
 import { resolveLocale } from "@/i18n/locale";
@@ -32,18 +34,18 @@ export default async function AdminMessagesPage({
             key={s}
             href={s === "new" ? "/admin/messages" : "/admin/messages?status=handled"}
             aria-current={s === status ? "page" : undefined}
-            className="rounded-full border px-3 py-1 text-sm aria-[current=page]:border-primary aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
+            className="rounded-full bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground hover:bg-orange-100 aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground dark:hover:bg-orange-900/40"
           >
             {t(`tabs.${s}`)}
           </Link>
         ))}
       </nav>
       {messages.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t(`empty.${status}`)}</p>
+        <EmptyState icon={Inbox}>{t(`empty.${status}`)}</EmptyState>
       ) : (
         <ul className="flex flex-col gap-3">
           {messages.map((m) => (
-            <li key={m.id} className="flex flex-col gap-2 rounded-2xl border bg-card p-4">
+            <li key={m.id} className="flex flex-col gap-2 rounded-2xl border bg-card p-4 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-semibold">{m.name}</span>
                 <Badge variant="outline">{topics(m.topic)}</Badge>

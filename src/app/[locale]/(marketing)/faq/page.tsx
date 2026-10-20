@@ -33,8 +33,8 @@ export default async function FaqPage({ params }: PageProps<"/[locale]/faq">) {
                 <span
                   className={`grid size-10 place-items-center rounded-2xl ${
                     group === "guests"
-                      ? "bg-orange-100 text-orange-700"
-                      : "bg-emerald-100 text-emerald-800"
+                      ? "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300"
+                      : "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
                   }`}
                 >
                   <Icon className="size-5" aria-hidden />

@@ -1,5 +1,7 @@
+import { MapPin } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { AddLocationForm } from "@/features/restaurant-onboarding/add-location-form";
 import { LocationList } from "@/features/restaurant-locations/location-list";
 import { resolveLocale } from "@/i18n/locale";
@@ -29,7 +31,7 @@ export default async function LocationsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      {locations.length === 0 && <p className="text-sm text-muted-foreground">{t("empty")}</p>}
+      {locations.length === 0 && <EmptyState icon={MapPin}>{t("empty")}</EmptyState>}
       <LocationList restaurantId={restaurantId} locations={locations} />
       {canManage && (
         <section className="flex flex-col gap-4 border-t pt-6" aria-labelledby="add-location">

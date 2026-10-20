@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, UtensilsCrossed } from "lucide-react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
@@ -79,16 +79,20 @@ export function MenuItemCard({ item, currency }: { item: CustomerMenuItem; curre
   }
 
   const row = (
-    <div className="flex gap-3 py-3 text-left">
+    <div className="flex gap-3 p-3 text-left">
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h4 className="font-medium">{item.name}</h4>
+        <h4 className="font-semibold">{item.name}</h4>
         {item.description && (
           <p className="line-clamp-2 text-sm text-muted-foreground">{item.description}</p>
         )}
         {(item.dietaryTags.length > 0 || item.allergens.length > 0) && (
           <div className="flex flex-wrap gap-1">
             {item.dietaryTags.map((tag) => (
-              <Badge key={tag} variant="secondary">
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+              >
                 {td(tag)}
               </Badge>
             ))}
@@ -100,28 +104,43 @@ export function MenuItemCard({ item, currency }: { item: CustomerMenuItem; curre
           </div>
         )}
         <div className="mt-auto flex items-center gap-2 pt-1">
-          <span className="font-semibold tabular-nums">{price(item.priceMinor)}</span>
+          <span className="font-bold text-primary tabular-nums">{price(item.priceMinor)}</span>
           {item.unavailable && <Badge variant="outline">{t(item.unavailable)}</Badge>}
         </div>
       </div>
-      {item.imageUrl && (
-        <div className="relative size-24 shrink-0 overflow-hidden rounded-xl bg-muted">
-          <Image
-            src={item.imageUrl}
-            alt=""
-            fill
-            unoptimized
-            sizes="96px"
-            className="object-cover"
-          />
+      <div className="relative size-24 shrink-0">
+        <div className="relative size-full overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 dark:from-orange-900/40 dark:to-amber-950/40">
+          {item.imageUrl ? (
+            <Image
+              src={item.imageUrl}
+              alt=""
+              fill
+              unoptimized
+              sizes="96px"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <UtensilsCrossed
+              className="absolute inset-0 m-auto size-8 text-orange-300 dark:text-orange-900"
+              aria-hidden
+            />
+          )}
         </div>
-      )}
+        {!item.unavailable && (
+          <span
+            aria-hidden
+            className="absolute -right-1.5 -bottom-1.5 grid size-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-md ring-2 ring-card transition-transform group-active:scale-90"
+          >
+            <Plus className="size-4" />
+          </span>
+        )}
+      </div>
     </div>
   );
 
   if (item.unavailable) {
     return (
-      <article aria-label={item.name} className="opacity-60">
+      <article aria-label={item.name} className="rounded-2xl border bg-card opacity-60">
         {row}
       </article>
     );
@@ -131,7 +150,7 @@ export function MenuItemCard({ item, currency }: { item: CustomerMenuItem; curre
     <article aria-label={item.name}>
       <button
         type="button"
-        className="w-full rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        className="group w-full rounded-2xl border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >

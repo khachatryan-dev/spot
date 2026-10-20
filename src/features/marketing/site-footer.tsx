@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Link } from "@/i18n/navigation";
 
 import { Logo } from "./logo";
@@ -56,9 +57,12 @@ export async function SiteFooter() {
         ))}
       </div>
       <div className="border-t">
-        <p className="mx-auto w-full max-w-6xl px-4 py-4 text-xs text-muted-foreground">
-          {t("rights", { year: new Date().getFullYear() })}
-        </p>
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
+          <p className="text-xs text-muted-foreground">
+            {t("rights", { year: new Date().getFullYear() })}
+          </p>
+          <ThemeToggle />
+        </div>
       </div>
     </footer>
   );

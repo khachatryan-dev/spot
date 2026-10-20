@@ -57,7 +57,7 @@ export default async function ContactPage({
           <ul className="flex flex-col gap-3">
             {details.map(({ Icon, label, value, href }) => (
               <li key={label} className="flex items-center gap-4 rounded-2xl border bg-card p-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-orange-100 text-orange-700">
+                <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
                   <Icon className="size-5" aria-hidden />
                 </span>
                 <div className="flex min-w-0 flex-col">

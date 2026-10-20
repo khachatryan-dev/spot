@@ -1,6 +1,7 @@
-import { ChevronRight } from "lucide-react";
+import { BookOpen, ChevronRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { CreateMenuForm } from "@/features/menu-editor/create-menu-form";
 import { resolveLocale } from "@/i18n/locale";
@@ -37,18 +38,22 @@ export default async function MenusPage({
   return (
     <div className="flex flex-col gap-6">
       {menus.length === 0 ? (
-        <div className="flex flex-col gap-4 rounded-xl border border-dashed p-6">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-medium">{t("emptyTitle")}</h2>
-            <p className="text-sm text-muted-foreground">{t("emptyDescription")}</p>
-          </div>
-          {canManage && (
-            <CreateMenuForm
-              restaurantId={restaurantId}
-              locationIds={locations.filter((l) => l.status === "active").map((l) => l.id)}
-            />
-          )}
-        </div>
+        <EmptyState
+          icon={BookOpen}
+          title={t("emptyTitle")}
+          action={
+            canManage && (
+              <div className="w-full max-w-md text-left">
+                <CreateMenuForm
+                  restaurantId={restaurantId}
+                  locationIds={locations.filter((l) => l.status === "active").map((l) => l.id)}
+                />
+              </div>
+            )
+          }
+        >
+          {t("emptyDescription")}
+        </EmptyState>
       ) : (
         <>
           <ul className="flex flex-col divide-y rounded-xl border">

@@ -1,5 +1,7 @@
+import { MessageSquareHeart } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { ReviewReply } from "@/features/reviews/review-reply";
 import { Stars } from "@/features/reviews/stars";
@@ -33,7 +35,7 @@ export default async function RestaurantReviewsPage({
         </p>
       )}
       {data.reviews.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        <EmptyState icon={MessageSquareHeart}>{t("empty")}</EmptyState>
       ) : (
         <ul className="flex flex-col gap-3" aria-label={t("listLabel")}>
           {data.reviews.map((r) => (

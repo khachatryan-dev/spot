@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowDown, ArrowUp, Pencil, Plus, Users } from "lucide-react";
+import { ArrowDown, ArrowUp, Pencil, Plus, QrCode, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { useOptimisticValue } from "@/components/shared/use-optimistic-value";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -95,9 +96,7 @@ export function TablesManager({
         />
       )}
       {tables.length === 0 ? (
-        <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
-          {t("empty")}
-        </p>
+        <EmptyState icon={QrCode}>{t("empty")}</EmptyState>
       ) : (
         <ul className="flex flex-col divide-y rounded-xl border" aria-label={t("listLabel")}>
           {tables.map((table, index) => (

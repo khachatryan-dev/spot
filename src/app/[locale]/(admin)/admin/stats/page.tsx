@@ -22,9 +22,9 @@ export default async function AdminStatsPage({
   const percent = (value: number | null) =>
     value === null ? "—" : format.number(value, { style: "percent", maximumFractionDigits: 0 });
   const card = (label: string, value: string | number, sub?: string) => (
-    <div className="rounded-xl border p-3">
+    <div className="rounded-2xl border border-l-4 border-l-orange-500 bg-card p-3 shadow-sm">
       <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className="text-xl font-semibold tabular-nums">{value}</dd>
+      <dd className="text-2xl font-bold tabular-nums">{value}</dd>
       {sub && <dd className="text-xs text-muted-foreground">{sub}</dd>}
     </div>
   );

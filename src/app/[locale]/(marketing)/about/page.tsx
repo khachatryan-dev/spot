@@ -9,9 +9,9 @@ import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 
 const VALUES = [
-  ["simple", Sparkles, "bg-orange-100 text-orange-700"],
-  ["local", MapPin, "bg-emerald-100 text-emerald-800"],
-  ["fair", HandHeart, "bg-rose-100 text-rose-700"],
+  ["simple", Sparkles, "bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300"],
+  ["local", MapPin, "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300"],
+  ["fair", HandHeart, "bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300"],
 ] as const;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -63,25 +63,28 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
             {t("who.title")}
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="reveal flex flex-col gap-3 rounded-3xl bg-orange-50 p-6 ring-1 ring-orange-100">
-              <UtensilsCrossed className="size-7 text-orange-700" aria-hidden />
+            <div className="reveal flex flex-col gap-3 rounded-3xl bg-orange-50 p-6 ring-1 ring-orange-100 dark:bg-orange-950/40 dark:ring-orange-900/50">
+              <UtensilsCrossed
+                className="size-7 text-orange-700 dark:text-orange-300"
+                aria-hidden
+              />
               <h3 className="text-lg font-semibold">{t("who.guests.title")}</h3>
               <p className="text-sm text-muted-foreground">{t("who.guests.text")}</p>
               <Link
                 href="/restaurants"
-                className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-orange-800 hover:underline"
+                className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-orange-800 hover:underline dark:text-orange-300"
               >
                 {t("who.guests.cta")}
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </div>
-            <div className="reveal flex flex-col gap-3 rounded-3xl bg-emerald-50 p-6 ring-1 ring-emerald-100">
-              <Store className="size-7 text-emerald-800" aria-hidden />
+            <div className="reveal flex flex-col gap-3 rounded-3xl bg-emerald-50 p-6 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:ring-emerald-900/50">
+              <Store className="size-7 text-emerald-800 dark:text-emerald-300" aria-hidden />
               <h3 className="text-lg font-semibold">{t("who.restaurants.title")}</h3>
               <p className="text-sm text-muted-foreground">{t("who.restaurants.text")}</p>
               <Link
                 href="/register?for=restaurant"
-                className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-emerald-800 hover:underline"
+                className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-emerald-800 hover:underline dark:text-emerald-300"
               >
                 {t("who.restaurants.cta")}
                 <ArrowRight className="size-4" aria-hidden />
@@ -90,7 +93,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
           </div>
         </section>
 
-        <section className="reveal flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 px-6 py-10 text-center">
+        <section className="reveal flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 px-6 py-10 text-center dark:from-amber-900/40 dark:via-orange-900/40 dark:to-rose-900/40">
           <h2 className="text-2xl font-bold tracking-tight">{t("cta.title")}</h2>
           <p className="max-w-md text-muted-foreground">{t("cta.text")}</p>
           <Button size="lg" className="h-10 rounded-xl px-5" render={<Link href="/contact" />}>

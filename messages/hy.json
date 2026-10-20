@@ -8,7 +8,11 @@
     "language": "Լեզու",
     "comingSoon": "Շուտով",
     "comingSoonDescription": "Այս բաժինը մշակման փուլում է։",
-    "signOut": "Ելք"
+    "signOut": "Ելք",
+    "theme": {
+      "toDark": "Միացնել մութ ռեժիմը",
+      "toLight": "Միացնել լուսավոր ռեժիմը"
+    }
   },
   "Marketing": {
     "nav": {
@@ -827,7 +831,8 @@
     "busyDescription": "Խնդրում ենք սպասել մեկ րոպե և նորից սկանավորել կոդը։",
     "myOrders": "Իմ պատվերները ({count})",
     "bill": "Հաշիվ",
-    "rateVisit": "Գնահատեք ձեր այցը {restaurant}"
+    "rateVisit": "Գնահատեք ձեր այցը {restaurant}",
+    "findRestaurants": "Գտնել ռեստորան"
   },
   "CustomerMenu": {
     "categories": "Մենյուի բաժիններ",
@@ -893,7 +898,14 @@
     "cancel": "Չեղարկել պատվերը",
     "cancelConfirm": "Չեղարկե՞լ #{number} պատվերը։",
     "cancelled": "Պատվերը չեղարկված է։",
-    "reasonLabel": "Պատճառը՝ {reason}"
+    "reasonLabel": "Պատճառը՝ {reason}",
+    "progress": {
+      "sent": "Ուղարկվել",
+      "accepted": "Ընդունվել",
+      "preparing": "Եփվում",
+      "ready": "Պատրաստ",
+      "served": "Սեղանին"
+    }
   },
   "OrderBoard": {
     "columns": {

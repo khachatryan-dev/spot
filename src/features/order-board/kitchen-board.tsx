@@ -1,9 +1,10 @@
 "use client";
 
-import { AlertTriangle, MessageSquare } from "lucide-react";
+import { AlertTriangle, ChefHat, MessageSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { useHydrated } from "@/features/customer-menu/cart-context";
 import { cn } from "@/lib/utils";
 import type { RestaurantPermission } from "@/shared/auth/permissions";
@@ -52,9 +53,7 @@ export function KitchenBoard({
   return (
     <div className="flex flex-col gap-6">
       {queue.length === 0 ? (
-        <p className="rounded-2xl border border-dashed p-10 text-center text-lg text-muted-foreground">
-          {t("empty")}
-        </p>
+        <EmptyState icon={ChefHat}>{t("empty")}</EmptyState>
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-label={t("queue")}>
           {queue.map((order) => (

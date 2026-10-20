@@ -52,9 +52,9 @@ export function ContactForm({ initialTopic }: { initialTopic: ContactTopic }) {
     return (
       <div
         role="status"
-        className="flex flex-col items-center gap-3 rounded-2xl bg-emerald-50 p-8 text-center motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:fade-in"
+        className="flex flex-col items-center gap-3 rounded-2xl bg-emerald-50 p-8 text-center motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:fade-in dark:bg-emerald-950/40"
       >
-        <CheckCircle2 className="size-12 text-emerald-700" aria-hidden />
+        <CheckCircle2 className="size-12 text-emerald-700 dark:text-emerald-300" aria-hidden />
         <p className="text-lg font-semibold">{t("sentTitle")}</p>
         <p className="text-sm text-muted-foreground">{t("sentText")}</p>
         <Button
@@ -79,7 +79,7 @@ export function ContactForm({ initialTopic }: { initialTopic: ContactTopic }) {
             {CONTACT_TOPICS.map((topic) => (
               <label
                 key={topic}
-                className="flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm transition-colors has-checked:border-primary has-checked:bg-orange-50 has-focus-visible:ring-3 has-focus-visible:ring-ring/50"
+                className="flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm transition-colors has-checked:border-primary has-checked:bg-orange-50 has-focus-visible:ring-3 has-focus-visible:ring-ring/50 dark:has-checked:bg-orange-950/40"
               >
                 <input
                   type="radio"

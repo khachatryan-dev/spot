@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Armenian } from "next/font/google";
+import { headers } from "next/headers";
 import { connection } from "next/server";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 
 import { Toaster } from "@/components/ui/sonner";
 import { resolveLocale } from "@/i18n/locale";
@@ -10,6 +12,7 @@ import { routing } from "@/i18n/routing";
 
 import "../globals.css";
 import { clientEnv } from "@/shared/config/env.client";
+import { nonceFromCsp } from "@/shared/security/csp";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -40,18 +43,24 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   // time, and a page prerendered at build time would have its scripts blocked.
   await connection();
   const locale = await resolveLocale(params);
+  // next-themes sets the theme class before paint with a small inline script.
+  const nonce = nonceFromCsp((await headers()).get("content-security-policy"));
 
   return (
     <html
       lang={locale}
+      // next-themes adds the theme class on the client.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${notoArmenian.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <NextIntlClientProvider>
-          {children}
-          {/* Top: on phones, bottom toasts cover the action buttons. */}
-          <Toaster position="top-center" />
-        </NextIntlClientProvider>
+        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange nonce={nonce}>
+          <NextIntlClientProvider>
+            {children}
+            {/* Top: on phones, bottom toasts cover the action buttons. */}
+            <Toaster position="top-center" />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

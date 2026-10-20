@@ -6,6 +6,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import { LiveRefresh } from "@/features/ordering/live-refresh";
 import { CancelOrderButton } from "@/features/ordering/cancel-order-button";
+import { OrderProgress } from "@/features/ordering/order-progress";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { getCustomer } from "@/server/guests/current-customer";
@@ -50,9 +51,9 @@ export default async function MyOrdersPage({
       {typeof placed === "string" && orders?.some((o) => o.id === placed) && (
         <p
           role="status"
-          className="flex items-center gap-2 rounded-xl bg-primary/10 p-3 text-sm font-medium"
+          className="flex items-center gap-2 rounded-2xl bg-emerald-50 p-4 text-sm font-medium text-emerald-900 ring-1 ring-emerald-100 motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:fade-in dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900/50"
         >
-          <CheckCircle2 className="size-5 text-primary" aria-hidden />
+          <CheckCircle2 className="size-6 text-emerald-700 dark:text-emerald-300" aria-hidden />
           {t("placed")}
         </p>
       )}
@@ -63,13 +64,17 @@ export default async function MyOrdersPage({
         <>
           <ul className="flex flex-col gap-3" aria-label={t("title")}>
             {orders.map((order) => (
-              <li key={order.id} className="flex flex-col gap-2 rounded-2xl border p-4">
+              <li
+                key={order.id}
+                className="flex flex-col gap-3 rounded-3xl border bg-card p-4 shadow-sm"
+              >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-semibold">{t("number", { number: order.number })}</span>
                   <Badge variant={DONE.includes(order.status) ? "outline" : "default"}>
                     {t(`status.${order.status}`)}
                   </Badge>
                 </div>
+                <OrderProgress status={order.status} />
                 <span className="text-xs text-muted-foreground">
                   {format.dateTime(order.submittedAt, { hour: "2-digit", minute: "2-digit" })}
                 </span>

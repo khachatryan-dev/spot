@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { roleHasPermission } from "@/shared/auth/permissions";
 import { ORDER_STATUSES } from "@/shared/constants/orders";
 
-import { findTransition, isFinalStatus, nextStatuses } from "./order-status";
+import { findTransition, guestProgress, isFinalStatus, nextStatuses } from "./order-status";
 
 const can =
   (role: Parameters<typeof roleHasPermission>[0]) => (p: Parameters<typeof roleHasPermission>[1]) =>
@@ -42,5 +42,17 @@ describe("order status rules", () => {
     expect(nextStatuses("ready", can("waiter"))).toEqual(["served"]);
     expect(nextStatuses("preparing", can("manager"))).toEqual(["ready", "cancelled"]);
     expect(nextStatuses("submitted", can("cashier"))).toEqual([]);
+  });
+});
+
+describe("guestProgress", () => {
+  it("never goes backwards along the normal path, and has no step for stopped orders", () => {
+    const path = ORDER_STATUSES.filter((s) => s !== "cancelled" && s !== "rejected");
+    const steps = path.map((s) => guestProgress(s)!);
+    expect(steps).toEqual([...steps].sort((a, b) => a - b));
+    expect(steps[0]).toBe(0);
+    expect(steps.at(-1)).toBe(4);
+    expect(guestProgress("cancelled")).toBeNull();
+    expect(guestProgress("rejected")).toBeNull();
   });
 });

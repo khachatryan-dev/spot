@@ -42,9 +42,17 @@ export default async function RestaurantLayout({
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <div className="flex flex-col gap-4 print:hidden">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold">{restaurant.name}</h1>
-          <RestaurantStatusBadge status={restaurant.status} />
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden
+            className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 text-xl font-bold text-white uppercase shadow-sm shadow-orange-500/30"
+          >
+            {restaurant.name.trim().charAt(0)}
+          </span>
+          <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+            <h1 className="text-2xl font-bold">{restaurant.name}</h1>
+            <RestaurantStatusBadge status={restaurant.status} />
+          </div>
         </div>
         <RestaurantTabs restaurantId={restaurant.id} visible={visibleTabs} />
       </div>

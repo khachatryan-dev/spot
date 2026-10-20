@@ -67,3 +67,12 @@ test("guest sees the menu after scanning", async ({ page, browser }) => {
   await guest.reload();
   await expect(guest.getByRole("heading", { name: "Մենյուն այս պահին հասանելի չէ" })).toBeVisible();
 });
+
+test("without a table, the page explains how to start and where to look", async ({ page }) => {
+  await page.goto("/table");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Սկանավորեք ձեր սեղանի QR կոդը" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Գտնել ռեստորան" }).click();
+  await expect(page).toHaveURL("/restaurants");
+});

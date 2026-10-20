@@ -1,6 +1,7 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Store } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { EmptyState } from "@/components/shared/empty-state";
 import { RestaurantStatusBadge } from "@/components/shared/restaurant-status-badge";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
@@ -35,10 +36,10 @@ export default async function AdminRestaurantsPage({
             href={{ pathname: "/admin", query: { status: filter } }}
             aria-current={filter === status ? "page" : undefined}
             className={cn(
-              "rounded-full border px-3 py-1 text-sm",
+              "rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
               filter === status
-                ? "border-primary bg-primary text-primary-foreground"
-                : "hover:bg-muted",
+                ? "bg-primary text-primary-foreground shadow-sm shadow-orange-700/20"
+                : "bg-secondary text-secondary-foreground hover:bg-orange-100 dark:hover:bg-orange-900/40",
             )}
           >
             {statuses(filter)}
@@ -46,11 +47,9 @@ export default async function AdminRestaurantsPage({
         ))}
       </nav>
       {restaurants.length === 0 ? (
-        <p className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
-          {t("empty")}
-        </p>
+        <EmptyState icon={Store}>{t("empty")}</EmptyState>
       ) : (
-        <ul className="flex flex-col divide-y rounded-xl border">
+        <ul className="flex flex-col divide-y rounded-2xl border bg-card shadow-sm">
           {restaurants.map((restaurant) => (
             <li key={restaurant.id}>
               <Link

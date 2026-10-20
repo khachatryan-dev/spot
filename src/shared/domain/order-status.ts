@@ -51,3 +51,28 @@ export function nextStatuses(
 export const CUSTOMER_CANCELLABLE: OrderStatus[] = ["submitted", "received"];
 
 export const isFinalStatus = (status: OrderStatus) => ORDER_TRANSITIONS[status].length === 0;
+
+/** What the guest's progress tracker shows: sent → accepted → cooking → ready → served. */
+export const GUEST_PROGRESS_STEPS = ["sent", "accepted", "preparing", "ready", "served"] as const;
+export type GuestProgressStep = (typeof GUEST_PROGRESS_STEPS)[number];
+
+/** Index into GUEST_PROGRESS_STEPS, or null for cancelled / rejected orders. */
+export function guestProgress(status: OrderStatus): number | null {
+  switch (status) {
+    case "submitted":
+    case "received":
+      return 0;
+    case "accepted":
+      return 1;
+    case "preparing":
+      return 2;
+    case "ready":
+      return 3;
+    case "served":
+    case "completed":
+      return 4;
+    case "cancelled":
+    case "rejected":
+      return null;
+  }
+}
