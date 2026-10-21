@@ -169,7 +169,9 @@ test("owner sets up reservations and sees bookings on the dashboard", async ({ p
   await expect(booking).toContainText("Նստած է");
   await booking.getByRole("button", { name: "Ավարտել Գոռ-ի այցը և ազատել սեղանը" }).click();
   await expect(booking).toContainText("Ավարտված");
-  await expect(booking.getByRole("button")).toHaveCount(0);
+  // Nothing left to do with a finished booking except rate the guest (two-way reviews).
+  await expect(booking.getByRole("button")).toHaveCount(1);
+  await expect(booking.getByRole("button", { name: "Գնահատել Գոռ-ին" })).toBeVisible();
 
   // The guest sees the decline reason.
   await guest.goto("/reservations");

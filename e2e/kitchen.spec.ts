@@ -13,7 +13,7 @@ async function staffMember(
   await page.getByLabel("Էլ. փոստ").fill(email);
   await page.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
   await sql`INSERT INTO restaurant_staff (restaurant_id, user_id, role) SELECT ${restaurantId}, id, ${role} FROM users WHERE email = ${email}`;
   return page;
 }

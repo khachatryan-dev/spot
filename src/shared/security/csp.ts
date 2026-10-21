@@ -72,8 +72,10 @@ export const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   {
+    // Our own pages may use the camera (the in-app QR scanner) and location (near me).
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), payment=(), usb=(), geolocation=(self), browsing-topics=()",
+    value:
+      "camera=(self), microphone=(), payment=(), usb=(), geolocation=(self), browsing-topics=()",
   },
 ];
 

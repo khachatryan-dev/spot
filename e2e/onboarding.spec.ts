@@ -15,7 +15,7 @@ test("owner registers, creates a restaurant and submits it for review", async ({
   await page.getByLabel("Էլ. փոստ").fill(email);
   await page.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
 
   // Empty dashboard → create
   await page.goto("/dashboard");

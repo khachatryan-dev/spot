@@ -16,7 +16,8 @@ export function authAudience(value: string | string[] | undefined): AuthAudience
 
 /**
  * Where to go after signing in or up: a safe `?next=` path, else the
- * audience's own start (new owners go straight to creating their restaurant).
+ * audience's own start: guests to the app's home, new owners straight to creating
+ * their restaurant.
  */
 export function audienceTarget(
   next: string | string[] | undefined,
@@ -24,7 +25,8 @@ export function audienceTarget(
   page: "login" | "register",
   locale: Locale,
 ) {
-  const start = audience === "guest" ? "/" : page === "register" ? "/dashboard/new" : "/dashboard";
+  const start =
+    audience === "guest" ? "/home" : page === "register" ? "/dashboard/new" : "/dashboard";
   return safeRedirectPath(
     typeof next === "string" ? next : undefined,
     getPathname({ href: start, locale }),

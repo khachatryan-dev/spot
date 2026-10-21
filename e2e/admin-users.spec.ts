@@ -10,7 +10,7 @@ async function signUp(browser: Browser, name: string, email: string) {
   await page.getByLabel("Էլ. փոստ").fill(email);
   await page.getByLabel("Գաղտնաբառ").fill(PASSWORD);
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
   return page;
 }
 

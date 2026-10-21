@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { Star } from "lucide-react";
+
+import { EmptyState } from "@/components/shared/empty-state";
 import { MyReview } from "@/features/reviews/my-review";
 import { ReviewForm } from "@/features/reviews/review-form";
 import { resolveLocale } from "@/i18n/locale";
@@ -24,9 +27,9 @@ export default async function ReviewsPage({ params }: PageProps<"/[locale]/revie
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
+      <h1 className="px-1 text-2xl font-bold">{t("title")}</h1>
       {opportunities.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("nothingToRate")}</p>
+        <EmptyState icon={Star}>{t("nothingToRate")}</EmptyState>
       ) : (
         opportunities.map((o) => (
           <ReviewForm
@@ -43,7 +46,7 @@ export default async function ReviewsPage({ params }: PageProps<"/[locale]/revie
         ))
       )}
       {customer?.type === "guest" && (
-        <p className="text-sm text-muted-foreground">
+        <p className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-sm ring-1 ring-border">
           {t("signInHint")}{" "}
           <Link
             href={{ pathname: "/login", query: { next: "/reviews" } }}
@@ -55,7 +58,7 @@ export default async function ReviewsPage({ params }: PageProps<"/[locale]/revie
       )}
       {mine.length > 0 && (
         <section aria-labelledby="mine-heading" className="flex flex-col gap-3">
-          <h2 id="mine-heading" className="text-lg font-semibold">
+          <h2 id="mine-heading" className="px-1 font-semibold">
             {t("mineTitle")}
           </h2>
           <ul className="flex flex-col gap-3">

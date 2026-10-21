@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { LanguageSwitcher } from "@/components/shared/language-switcher";
 import { NotificationBell } from "@/components/shared/notification-bell";
+import { AppTabBar } from "@/features/customer-app/app-tab-bar";
 import { Logo } from "@/features/marketing/logo";
 import { SiteFooter } from "@/features/marketing/site-footer";
 import { resolveLocale } from "@/i18n/locale";
@@ -51,6 +52,8 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
       <SiteFooter />
+      {/* Signed-in guests keep the app's bottom bar while exploring (phones only). */}
+      {session && <AppTabBar onlyUnder={["/restaurants", "/r"]} className="md:hidden" />}
     </div>
   );
 }

@@ -8,6 +8,7 @@ export * from "./analytics";
 export * from "./audit";
 export * from "./bills";
 export * from "./contact";
+export * from "./customer-reviews";
 export * from "./favorites";
 export * from "./auth";
 export * from "./guests";

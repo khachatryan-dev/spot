@@ -34,7 +34,7 @@ test("owner invites a waiter by link, changes the role and removes them", async 
   const stranger = await strangerContext.newPage();
   await stranger.goto("/register");
   await register(stranger, "Օտար", `stranger-${Date.now()}@example.am`);
-  await expect(stranger).toHaveURL("/");
+  await expect(stranger).toHaveURL("/home");
   await stranger.goto(link);
   await expect(stranger.getByText(/Դուք մուտք եք գործել որպես/)).toBeVisible();
   await expect(stranger.getByRole("button", { name: "Ընդունել հրավերը" })).toHaveCount(0);

@@ -31,7 +31,7 @@ test("a restaurant from signing in to serving its first order", async ({ page, b
   await page.getByLabel("Էլ. փոստ").fill(ownerEmail);
   await page.getByLabel("Գաղտնաբառ").fill(PASSWORD);
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
   await page.goto("/dashboard");
   await page.getByRole("button", { name: "Ելք" }).click();
   await expect(page).toHaveURL("/");
@@ -107,7 +107,7 @@ test("a restaurant from signing in to serving its first order", async ({ page, b
 
   const adminEmail = `admin-${stamp}@example.am`;
   const admin = await registerIn(browser, "Ադմին", adminEmail);
-  await expect(admin).toHaveURL("/");
+  await expect(admin).toHaveURL("/home");
   await sql`UPDATE users SET platform_role = 'platform_admin' WHERE email = ${adminEmail}`;
   await admin.goto(`/admin/restaurants/${restaurantId}`);
   await admin.getByRole("button", { name: "Հաստատել" }).click();

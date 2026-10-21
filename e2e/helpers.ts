@@ -9,7 +9,7 @@ export async function registerAndCreateRestaurant(page: Page, restaurantName: st
     .fill(`owner-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@example.am`);
   await page.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
 
   await page.goto("/dashboard/new");
   await page.getByLabel("Ռեստորանի անվանումը").fill(restaurantName);

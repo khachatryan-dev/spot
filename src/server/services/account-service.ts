@@ -139,6 +139,39 @@ export interface PastVisit {
   bookingLocationSlug: string | null;
 }
 
+export interface VisitSummary {
+  /** Table visits where this guest ordered something. */
+  visits: number;
+  /** What they ordered over all visits, per currency (most restaurants use AMD). */
+  spent: { currency: string; minor: number }[];
+}
+
+/** Totals for the customer app's home: visits and spending, cancelled orders excluded. */
+export async function getVisitSummary(actor: Actor): Promise<VisitSummary> {
+  const rows = await db
+    .select({
+      currency: restaurants.currency,
+      visits: sql<number>`count(distinct ${tableSessions.id})::int`,
+      minor: sql<number>`coalesce(sum(${orders.totalMinor}), 0)::int`,
+    })
+    .from(tableSessionMembers)
+    .innerJoin(tableSessions, eq(tableSessions.id, tableSessionMembers.sessionId))
+    .innerJoin(restaurants, eq(restaurants.id, tableSessions.restaurantId))
+    .innerJoin(orders, eq(orders.memberId, tableSessionMembers.id))
+    .where(
+      and(
+        eq(tableSessionMembers.userId, actor.id),
+        notInArray(orders.status, ["cancelled", "rejected"]),
+      ),
+    )
+    .groupBy(restaurants.currency)
+    .orderBy(desc(sql`sum(${orders.totalMinor})`));
+  return {
+    visits: rows.reduce((total, row) => total + row.visits, 0),
+    spent: rows.map(({ currency, minor }) => ({ currency, minor })),
+  };
+}
+
 /** Table visits where this guest ordered, latest first. */
 export async function listMyVisits(actor: Actor, limit = 50): Promise<PastVisit[]> {
   const rows = await db

@@ -41,7 +41,7 @@ test("owner limits menu hours; kitchen marks items out of stock", async ({ page,
   await cook.getByLabel("Էլ. փոստ").fill(cookEmail);
   await cook.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await cook.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(cook).toHaveURL("/");
+  await expect(cook).toHaveURL("/home");
   await sql`
     INSERT INTO restaurant_staff (restaurant_id, user_id, role)
     SELECT ${restaurantId}, id, 'kitchen' FROM users WHERE email = ${cookEmail}`;

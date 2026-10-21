@@ -4,6 +4,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { BillActions } from "@/features/bills/bill-actions";
 import { BillDetails } from "@/features/bills/bill-details";
 import { RecordPaymentPanel } from "@/features/bills/record-payment-panel";
+import { RateCustomerButton } from "@/features/customer-reviews/rate-customer-button";
 import { LiveRefresh } from "@/features/ordering/live-refresh";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
@@ -13,6 +14,7 @@ import { realtimeChannels } from "@/server/realtime/channels";
 import { isRealtimeEnabled } from "@/server/realtime/realtime";
 import { getBillPaymentState } from "@/server/services/bill-payment-service";
 import { getBillForStaff } from "@/server/services/bill-service";
+import { listGivenRatings, listRateableVisitors } from "@/server/services/customer-review-service";
 import { equalShare } from "@/shared/domain/bill-split";
 import { formatMoney } from "@/shared/utils/money";
 import { roleHasPermission } from "@/shared/auth/permissions";
@@ -23,23 +25,37 @@ export default async function StaffBillPage({
 }: PageProps<"/[locale]/dashboard/r/[restaurantId]/bills/[sessionId]">) {
   const locale = await resolveLocale(params);
   const { restaurantId, sessionId } = await params;
-  const { view, canManage, canTakePayments, state } = await guardPage(locale, async () => {
-    const user = await requireUser();
-    const view = await getBillForStaff(user, restaurantId, sessionId);
-    const access = await getRestaurantAccess(user.id, restaurantId);
-    const can = (p: Parameters<typeof roleHasPermission>[1]) =>
-      !!access && roleHasPermission(access.role, p);
-    const state = view.bill.status === "open" ? null : await getBillPaymentState(view.bill.id);
-    return {
-      view,
-      state,
-      canManage: can("bill:manage"),
-      canTakePayments: can("payment:confirm"),
-    };
-  });
+  const { view, canManage, canTakePayments, state, visitors, given } = await guardPage(
+    locale,
+    async () => {
+      const user = await requireUser();
+      const view = await getBillForStaff(user, restaurantId, sessionId);
+      const access = await getRestaurantAccess(user.id, restaurantId);
+      const can = (p: Parameters<typeof roleHasPermission>[1]) =>
+        !!access && roleHasPermission(access.role, p);
+      const state = view.bill.status === "open" ? null : await getBillPaymentState(view.bill.id);
+      // Once the visit is paid, managers can rate the signed-in guests (two-way reviews).
+      const rate = can("customer:rate") && view.bill.status === "paid";
+      const [visitors, given] = rate
+        ? await Promise.all([
+            listRateableVisitors(user, restaurantId, sessionId),
+            listGivenRatings(user, restaurantId, { tableSessionIds: [sessionId] }),
+          ])
+        : [[], []];
+      return {
+        view,
+        state,
+        canManage: can("bill:manage"),
+        canTakePayments: can("payment:confirm"),
+        visitors,
+        given: new Map(given.map((g) => [g.customerUserId, g])),
+      };
+    },
+  );
   const format = await getFormatter();
   const money = (minor: number) => formatMoney(minor, view.bill.currency, locale);
   const t = await getTranslations("Bill");
+  const rate = await getTranslations("CustomerReviews");
   const { bill, lines, tableNumber, awaitingKitchen } = view;
 
   return (
@@ -138,6 +154,29 @@ export default async function StaffBillPage({
           (state?.heldMinor ?? 0) === 0
         }
       />
+      {visitors.length > 0 && (
+        <section
+          aria-labelledby="rate-guests"
+          className="flex flex-col gap-2 rounded-2xl border p-4"
+        >
+          <h3 id="rate-guests" className="font-semibold">
+            {rate("guestsTitle")}
+          </h3>
+          <ul className="flex flex-col divide-y">
+            {visitors.map((v) => (
+              <li key={v.userId} className="flex items-center justify-between gap-3 py-2">
+                <span className="text-sm font-medium">{v.name}</span>
+                <RateCustomerButton
+                  restaurantId={restaurantId}
+                  target={{ subject: "visit", tableSessionId: sessionId, customerUserId: v.userId }}
+                  guest={v.name}
+                  given={given.get(v.userId)}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <LiveRefresh
         channel={realtimeChannels.location(restaurantId, bill.locationId)}
         enabled={isRealtimeEnabled()}

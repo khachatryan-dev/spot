@@ -12,6 +12,7 @@ import {
   getProfile,
   isFavorite,
   listFavorites,
+  getVisitSummary,
   listMyVisits,
   setFavorite,
   updateProfile,
@@ -146,5 +147,11 @@ describe("visit history", () => {
       },
     ]);
     expect(await listMyVisits(await account("ben@x.am"))).toEqual([]);
+
+    expect(await getVisitSummary(anna)).toEqual({
+      visits: 1,
+      spent: [{ currency: "AMD", minor: 400_000 }],
+    });
+    expect(await getVisitSummary(await account("ben2@x.am"))).toEqual({ visits: 0, spent: [] });
   });
 });

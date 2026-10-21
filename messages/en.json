@@ -326,7 +326,8 @@
       "emailRequired": "Leave your email address.",
       "phoneTaken": "This phone number belongs to another account.",
       "messageTooShort": "Write at least 10 characters.",
-      "messageTooLong": "The message is too long."
+      "messageTooLong": "The message is too long.",
+      "tooLateToRate": "It's too late to rate this visit (30 days)."
     }
   },
   "Onboarding": {
@@ -1088,7 +1089,10 @@
     "cancelRefunded": "Your deposit will be refunded.",
     "cancelNotRefunded": "It's less than {hours} hours before the booking, so the deposit won't be refunded.",
     "rateVisits": "{count, plural, one {Rate # visit} other {Rate # visits}}",
-    "account": "My account"
+    "account": "My account",
+    "bookNew": "Book",
+    "upcomingTitle": "Upcoming",
+    "pastTitle": "Past"
   },
   "StaffReservations": {
     "noLocation": "Add a location first.",
@@ -1134,7 +1138,8 @@
       "reason": "Reason",
       "back": "Back"
     },
-    "deposit": "Deposit {amount} · {state}"
+    "deposit": "Deposit {amount} · {state}",
+    "guestRating": "★ {average} · {count, plural, one {# rating} other {# ratings}} here"
   },
   "DevPayment": {
     "warning": "Test payment — no real money moves.",
@@ -1342,7 +1347,19 @@
     "bookAgain": "Book again",
     "save_favorite": "Save {name}",
     "unsave": "Remove {name} from saved",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "stats": {
+      "visits": "Visits",
+      "spent": "Spent",
+      "reviews": "Reviews"
+    },
+    "ratedTitle": "What restaurants say about you",
+    "ratedEmpty": "After your visits, restaurants can rate you as a guest. You'll see it here.",
+    "ratedAverage": "{average} average from {count, plural, one {# rating} other {# ratings}}",
+    "ratedVisit": {
+      "reservation": "Booking",
+      "visit": "Table visit"
+    }
   },
   "PublicRestaurant": {
     "metaTitle": "{name} — restaurant in {city}",
@@ -1754,7 +1771,7 @@
       },
       "restaurants": {
         "title": "What restaurants see",
-        "body": "When you book or order, the restaurant receives what it needs to serve you: your name, party size, contact details for the booking, and your orders. Each restaurant sees only its own guests."
+        "body": "When you book or order, the restaurant receives what it needs to serve you: your name, party size, contact details for the booking, and your orders. Each restaurant sees only its own guests. Restaurants can also rate you as a guest after a visit (stars and a short comment). Only that restaurant's team and you can see it — you'll find it in your profile; other restaurants never do."
       },
       "payments": {
         "title": "Payments",
@@ -1808,7 +1825,7 @@
       },
       "content": {
         "title": "Reviews and content",
-        "body": "Reviews must be honest and about a real visit. No insults, personal data of others, spam or advertising. We may hide content that breaks these rules. You keep rights to your content and allow us to show it on Spot."
+        "body": "Reviews must be honest and about a real visit. No insults, personal data of others, spam or advertising. We may hide content that breaks these rules. You keep rights to your content and allow us to show it on Spot. Restaurants may rate guests after a visit; these ratings must be fair and polite, and are shown only to that restaurant and the guest."
       },
       "conduct": {
         "title": "Fair use",
@@ -1844,5 +1861,84 @@
     "reopen": "Reopen",
     "reopenLabel": "Reopen the message from {name}",
     "done": "Saved."
+  },
+  "CustomerApp": {
+    "tabs": {
+      "label": "App",
+      "home": "Home",
+      "explore": "Explore",
+      "scan": "Scan",
+      "bookings": "Bookings",
+      "profile": "Profile"
+    },
+    "home": {
+      "title": "Home",
+      "greeting": "Hi, {name}!",
+      "greetingGuest": "Welcome to Spot!",
+      "subtitle": "Scan the code on your table to see the menu and order.",
+      "scan": "Scan QR code",
+      "tiles": {
+        "explore": "Explore",
+        "bookings": "Bookings",
+        "orders": "My orders",
+        "favorites": "Favourites"
+      },
+      "signInTitle": "Keep everything in one place",
+      "signInText": "Sign in to see your bookings, orders, favourite places and reviews.",
+      "signIn": "Sign in",
+      "register": "Create account",
+      "stats": {
+        "visits": "Visits",
+        "spent": "Spent"
+      },
+      "table": {
+        "title": "You're at table {number}",
+        "menu": "Menu",
+        "orders": "Orders",
+        "bill": "Bill"
+      },
+      "nextBooking": "Next booking",
+      "people": "{count, plural, one {# person} other {# people}}",
+      "rate": "How was {restaurant}? Leave a review",
+      "favorites": "Your places",
+      "recent": "Recent visits",
+      "seeAll": "See all",
+      "emptyTitle": "Find your first place",
+      "emptyText": "Browse restaurants near you and book a table."
+    },
+    "scan": {
+      "title": "Scan the table's QR code",
+      "subtitle": "Every table has its own code. Scanning it opens the menu for your table.",
+      "steps": {
+        "camera": "Open your phone's camera.",
+        "point": "Point it at the QR code on the table and tap the link that appears.",
+        "menu": "The menu opens — choose dishes and order."
+      },
+      "otherWay": "Or use your phone's camera app"
+    },
+    "scanner": {
+      "cameraLabel": "Camera view",
+      "starting": "Starting the camera…",
+      "opening": "Opening your table…",
+      "blocked": "The camera isn't available. Allow camera access in the browser settings, or take a photo of the code.",
+      "hint": "Point the camera at the code on the table",
+      "wrong": "This isn't a Spot table code. Try the code on your table.",
+      "torchOn": "Turn the light on",
+      "torchOff": "Turn the light off",
+      "photo": "Use a photo of the code"
+    }
+  },
+  "CustomerReviews": {
+    "rate": "Rate guest",
+    "rateLabel": "Rate {guest}",
+    "edit": "Your rating: {rating}★",
+    "editLabel": "Change your rating of {guest}",
+    "title": "How was {guest} as a guest?",
+    "visibility": "Only your team and the guest see this. The guest finds it in their profile — keep it fair and polite.",
+    "comment": "Comment (optional)",
+    "commentPlaceholder": "e.g. Came on time, very friendly",
+    "save": "Save rating",
+    "saved": "Rating saved.",
+    "guestsTitle": "Rate your guests"
   }
 }

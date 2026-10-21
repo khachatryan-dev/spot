@@ -17,7 +17,7 @@ test("an admin sees platform statistics", async ({ page }) => {
   await page.getByLabel("Էլ. փոստ").fill(adminEmail);
   await page.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await page.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/home");
   await sql`UPDATE users SET platform_role = 'platform_admin' WHERE email = ${adminEmail}`;
 
   await page.goto("/admin/stats");

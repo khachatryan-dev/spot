@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
 
+import { Bell } from "lucide-react";
+
+import { EmptyState } from "@/components/shared/empty-state";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -51,28 +54,42 @@ export default async function NotificationsPage({ params }: PageProps<"/[locale]
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
+      <h1 className="px-1 text-2xl font-bold">{t("title")}</h1>
       {items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        <EmptyState icon={Bell}>{t("empty")}</EmptyState>
       ) : (
         <ul className="flex flex-col gap-2" aria-label={t("title")}>
           {items.map((item) => {
             const body = (
               <>
-                <span className="text-sm">{text(item)}</span>
-                <span className="text-xs text-muted-foreground">
-                  {format.relativeTime(item.createdAt)}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "grid size-10 shrink-0 place-items-center rounded-2xl",
+                    item.readAt
+                      ? "bg-muted text-muted-foreground"
+                      : "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300",
+                  )}
+                >
+                  <Bell className="size-5" />
                 </span>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="text-sm">{text(item)}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {format.relativeTime(item.createdAt)}
+                  </span>
+                </span>
+                {!item.readAt && (
+                  <span aria-hidden className="mt-1.5 size-2.5 shrink-0 rounded-full bg-primary" />
+                )}
               </>
             );
-            const className = cn(
-              "flex flex-col gap-1 rounded-xl border p-3",
-              !item.readAt && "border-l-4 border-l-primary",
-            );
+            const className =
+              "flex items-start gap-3 rounded-3xl bg-card p-4 shadow-sm ring-1 ring-border";
             return (
               <li key={item.id}>
                 {item.link ? (
-                  <Link href={item.link} className={cn(className, "hover:bg-muted")}>
+                  <Link href={item.link} className={cn(className, "hover:bg-muted/50")}>
                     {!item.readAt && <span className="sr-only">{t("new")}</span>}
                     {body}
                   </Link>

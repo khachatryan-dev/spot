@@ -113,7 +113,7 @@ test("a visitor writes through the contact form and an admin handles it", async 
   await admin.getByLabel("Էլ. փոստ").fill(adminEmail);
   await admin.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await admin.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(admin).toHaveURL("/");
+  await expect(admin).toHaveURL("/home");
   await sql`UPDATE users SET platform_role = 'platform_admin' WHERE email = ${adminEmail}`;
 
   await admin.goto("/admin");

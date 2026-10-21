@@ -1,10 +1,19 @@
-import { CalendarDays, ChevronLeft, ChevronRight, CreditCard, Phone, Users } from "lucide-react";
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  CreditCard,
+  Phone,
+  Star,
+  Users,
+} from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RateCustomerButton } from "@/features/customer-reviews/rate-customer-button";
 import { LiveRefresh } from "@/features/ordering/live-refresh";
 import { BookingLink } from "@/features/reservations/booking-link";
 import { ReservationActions } from "@/features/reservations/reservation-actions";
@@ -16,6 +25,10 @@ import { authorizeRestaurant } from "@/server/policies/restaurant-access";
 import { realtimeChannels } from "@/server/realtime/channels";
 import { isRealtimeEnabled } from "@/server/realtime/realtime";
 import { listLocations } from "@/server/services/location-service";
+import {
+  listGivenRatings,
+  summarizeCustomerRatings,
+} from "@/server/services/customer-review-service";
 import { listReservationsForStaff } from "@/server/services/reservation-service";
 import { getRestaurant } from "@/server/services/restaurant-service";
 import { type RestaurantPermission, roleHasPermission } from "@/shared/auth/permissions";
@@ -59,7 +72,27 @@ export default async function ReservationsPage({
     );
     const now = new Date();
     const withActions = reservations.map((r) => ({ ...r, actions: availableActions(r, can, now) }));
-    return { restaurant, locations, location, today, date, currency, reservations: withActions };
+    // This restaurant's own ratings of these guests (never other restaurants').
+    const canRate = can("customer:rate");
+    const customerIds = reservations.flatMap((r) => (r.customerUserId ? [r.customerUserId] : []));
+    const [ratings, given] = await Promise.all([
+      summarizeCustomerRatings(user, restaurantId, customerIds),
+      canRate
+        ? listGivenRatings(user, restaurantId, { reservationIds: reservations.map((r) => r.id) })
+        : [],
+    ]);
+    return {
+      restaurant,
+      locations,
+      location,
+      today,
+      date,
+      currency,
+      reservations: withActions,
+      canRate,
+      ratings,
+      given: new Map(given.map((g) => [g.reservationId!, g])),
+    };
   });
   const t = await getTranslations("StaffReservations");
   const status = await getTranslations("Reservations.status");
@@ -185,7 +218,7 @@ export default async function ReservationsPage({
               key={r.id}
               className={cn(
                 "flex flex-col gap-2 rounded-2xl border p-4",
-                !isActive(r.status) && "opacity-60",
+                !isActive(r.status) && "bg-muted/50",
                 r.status === "pending_confirmation" && "border-primary",
               )}
             >
@@ -199,6 +232,15 @@ export default async function ReservationsPage({
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                 <span className="font-medium">{r.contactName}</span>
+                {r.customerUserId && data.ratings.get(r.customerUserId) && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900 dark:bg-amber-900/40 dark:text-amber-300">
+                    <Star className="size-3 fill-current" aria-hidden />
+                    {t("guestRating", {
+                      average: data.ratings.get(r.customerUserId)!.average.toFixed(1),
+                      count: data.ratings.get(r.customerUserId)!.count,
+                    })}
+                  </span>
+                )}
                 <span className="flex items-center gap-1">
                   <Users className="size-4" aria-hidden />
                   {t("guests", { count: r.partySize })}
@@ -227,6 +269,16 @@ export default async function ReservationsPage({
                 guest={r.contactName}
                 actions={r.actions}
               />
+              {data.canRate &&
+                r.customerUserId &&
+                (r.status === "completed" || r.status === "no_show") && (
+                  <RateCustomerButton
+                    restaurantId={restaurantId}
+                    target={{ subject: "reservation", reservationId: r.id }}
+                    guest={r.contactName}
+                    given={data.given.get(r.id)}
+                  />
+                )}
             </li>
           ))}
         </ul>

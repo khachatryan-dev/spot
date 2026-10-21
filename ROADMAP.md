@@ -194,6 +194,13 @@ Keep the summary short.
 - [x] Admin polish `~80k` — header with logo and Admin chip, pill sections with icons and active state (`AdminNav`), pill filters, `EmptyState` on restaurants, payments, messages, audit and reviews, stat cards
 - [x] Dark mode `~150k` — `next-themes` (follows the device, CSP nonce passed), sun/moon switch in auth, dashboard and admin headers and the public footer, dark partners for the brand colours; QR and print pages stay light
 
+### ✅ Phase 16 — Customer app (banking-app style) — ≈ 500–700k tokens
+- [x] A. App shell `~80k` — top bar (logo, bell, theme, language) and bottom bar Home · Explore · **Scan** · Bookings · Profile on customer pages (hidden at the table; kept on Explore for signed-in users), `/home` and `/scan` pages
+- [x] B. Home screen with real data `~120k` — visits and spending, current table card (menu, orders, bill), next booking, "rate your visit", favourites, recent visits; signing in or up as a guest lands on `/home`
+- [x] C. Bookings and Profile pages in the app style `~90k` — Profile: header card with visits, spent and reviews, settings-style menu, details, saved places, visit history, sign out; Bookings: Upcoming / Past with date tiles and coloured statuses; Reviews and Notifications restyled
+- [x] D. In-app QR scanner `~80k` — live camera with frame and torch (native detector or jsQR), photo fallback when the camera is blocked, only our own `/t/<token>` links open (`tablePathFromScan`); `Permissions-Policy` now allows `camera=(self)`. No typed code: a short code would be guessable
+- [x] E. Two-way reviews `~190k` — `customer_reviews` table (migration 0036): owners/managers (`customer:rate`) rate signed-in guests 1–5★ + comment after a completed / no-show booking or a paid table visit, within 30 days, editable and audited; staff see their own restaurant's average next to bookings; guests see every rating in Profile; Privacy and Terms updated
+
 ---
 
 ## Progress log

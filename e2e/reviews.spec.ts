@@ -111,7 +111,7 @@ test("a guest reviews their visit and it appears on the restaurant's page", asyn
   await admin.getByLabel("Էլ. փոստ").fill(adminEmail);
   await admin.getByLabel("Գաղտնաբառ").fill("correct horse battery");
   await admin.getByRole("button", { name: "Ստեղծել հաշիվ" }).click();
-  await expect(admin).toHaveURL("/");
+  await expect(admin).toHaveURL("/home");
   await sql`UPDATE users SET platform_role = 'platform_admin' WHERE email = ${adminEmail}`;
   await admin.goto("/admin/reviews");
   const queue = admin.getByRole("region", { name: /Բողոքարկված/ });

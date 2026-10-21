@@ -72,6 +72,12 @@ describe("SECURITY_HEADERS", () => {
       ]),
     );
   });
+
+  it("lets only our own pages use the camera, and nobody the microphone", () => {
+    const policy = SECURITY_HEADERS.find((h) => h.key === "Permissions-Policy")!.value;
+    expect(policy).toContain("camera=(self)");
+    expect(policy).toContain("microphone=()");
+  });
 });
 
 describe("nonceFromCsp", () => {

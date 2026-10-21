@@ -11,5 +11,5 @@ export const COMPANY = {
   /** Support hours, Yerevan time. */
   hours: "10:00–19:00",
   /** Date the legal pages were last updated (YYYY-MM-DD). */
-  legalUpdated: "2026-10-19",
+  legalUpdated: "2026-10-21",
 } as const;

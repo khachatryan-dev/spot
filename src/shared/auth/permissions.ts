@@ -37,6 +37,8 @@ export const RESTAURANT_PERMISSIONS = [
   "payment:confirm",
   "payment:refund",
   "review:respond",
+  /** Rate a customer after their visit (two-way reviews). */
+  "customer:rate",
   "analytics:read",
 ] as const;
 export type RestaurantPermission = (typeof RESTAURANT_PERMISSIONS)[number];
@@ -81,6 +83,7 @@ const MANAGER: readonly RestaurantPermission[] = [
   "payment:confirm",
   "payment:refund",
   "review:respond",
+  "customer:rate",
   "analytics:read",
 ];
 

@@ -249,6 +249,8 @@ export interface StaffReservation {
   createdAt: Date;
   depositMinor: number;
   deposit: DepositState | null;
+  /** The guest's account, for this restaurant's own ratings of them. */
+  customerUserId: string | null;
 }
 
 /** A location's reservations starting on a local date, in time order (reservation:read). */
@@ -289,6 +291,7 @@ export async function listReservationsForStaff(
       note: reservations.note,
       createdAt: reservations.createdAt,
       depositMinor: reservations.depositMinor,
+      customerUserId: reservations.customerUserId,
     })
     .from(reservations)
     .innerJoin(diningTables, eq(diningTables.id, reservations.tableId))

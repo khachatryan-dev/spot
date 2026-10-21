@@ -35,6 +35,7 @@ export const AUDIT_ACTIONS = [
   "bill.voided",
   "bill.payment_recorded",
   "review.responded",
+  "customer_review.saved",
   "review.reported",
   "review.kept",
   "review.hidden",
@@ -59,6 +60,7 @@ export const AUDIT_ENTITY_TYPES = [
   "payment",
   "bill",
   "review",
+  "customer_review",
   "user",
   "pos_connection",
 ] as const;
