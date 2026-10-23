@@ -201,6 +201,14 @@ Keep the summary short.
 - [x] D. In-app QR scanner `~80k` — live camera with frame and torch (native detector or jsQR), photo fallback when the camera is blocked, only our own `/t/<token>` links open (`tablePathFromScan`); `Permissions-Policy` now allows `camera=(self)`. No typed code: a short code would be guessable
 - [x] E. Two-way reviews `~190k` — `customer_reviews` table (migration 0036): owners/managers (`customer:rate`) rate signed-in guests 1–5★ + comment after a completed / no-show booking or a paid table visit, within 30 days, editable and audited; staff see their own restaurant's average next to bookings; guests see every rating in Profile; Privacy and Terms updated
 
+### ✅ Phase 17 — Guest journey polish
+- [x] Explore and restaurant page in app style `~130k` — search card, one-tap cuisine chips, filter chips, cards with cover or gradient, rating and "open" badges, whole-card links; restaurant page with photo hero, rating / open / price chips, action tiles (book, call, directions, website), cards for info, hours and menu
+- [x] Guest bill and payment screen (banking style) `~90k` — header with the big amount (running total, left to pay, paid in full) and a paid-progress bar, big "pay the rest" button, item picker and equal split as tappable blocks, receipt-style bill, success and waiting cards
+- [x] Install as an app (PWA) `~50k` — `app/manifest.ts` (start at /home, standalone, shortcuts), icons drawn by `scripts/generate-app-icons.mjs` (192, 512, maskable, Apple), theme colours and iOS web-app meta, install card on Home (Install button on Chrome, Safari steps on iPhone, closable). No service worker yet (needed only for push / offline)
+
+### ✅ Demo data
+- [x] Demo database `~180k` — `npm run db:seed-demo` (10 restaurants with Armenian/English menus, tables and QR codes, 10 guests, ~55 paid visits over 30 days, bookings in every state, reviews both ways, owner replies, a reported review, contact messages) and `npm run db:export-demo` → `docs/db/demo-database.sql`; all demo logins use `demo1234`
+
 ---
 
 ## Progress log

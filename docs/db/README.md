@@ -1,6 +1,6 @@
 # Database SQL
 
-`schema.sql` is the whole Spot database — 45 tables, their indexes,
+`schema.sql` is the whole Spot database — 47 tables, their indexes,
 constraints, triggers and functions — as plain SQL for PostgreSQL 15 or
 newer (17 recommended). Use it to set up a database by hand (pgAdmin,
 DBeaver, TablePlus, `psql`, your host's SQL console).
@@ -41,8 +41,8 @@ Don't do both on the same database: `schema.sql` expects an **empty** one.
 3. Check it worked:
 
    ```sql
-   SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';  -- 45
-   SELECT count(*) FROM drizzle.__drizzle_migrations;                             -- 35
+   SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';  -- 47
+   SELECT count(*) FROM drizzle.__drizzle_migrations;                             -- 37
    ```
 
 The file turns on two standard extensions, `btree_gist` (no double
@@ -51,6 +51,35 @@ database owner can enable them on PostgreSQL 13+; on managed hosts (Neon,
 Supabase, DigitalOcean, AWS RDS) they're allowed. If your host refuses, ask
 an administrator to run `CREATE EXTENSION btree_gist; CREATE EXTENSION
 pg_trgm;` first.
+
+## Demo database (`demo-database.sql`)
+
+For showing Spot to people, load `demo-database.sql` **instead of**
+`schema.sql` into an empty database (same steps as above). It is the full
+schema plus a month of demo life:
+
+- 10 restaurants in Yerevan, Gyumri, Dilijan and Sevan — menus in Armenian
+  and English (106 dishes, some with options), 8 tables each with working
+  QR codes, opening hours, bookings on most of them;
+- 10 guests with favourites, ~55 paid table visits, bookings (completed,
+  no-show, cancelled, upcoming, waiting for confirmation), guest reviews
+  with owner replies, restaurants' ratings of guests, one reported review,
+  contact messages and notifications.
+
+Every demo login uses the password **`demo1234`**:
+
+| Who               | Email                                                                                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Platform admin    | `admin@demo.spot.am`                                                                                                                                            |
+| Restaurant owners | `owner.<key>@demo.spot.am` — keys: `ararat`, `tbilisi`, `napoli`, `sakura`, `lavash-cafe`, `dilijan-forest`, `burger-lab`, `beirut`, `sevan-fish`, `green-bowl` |
+| Ararat's team     | `waiter.ararat@…`, `kitchen.ararat@…`, `cashier.ararat@…`                                                                                                       |
+| Guests            | `anna`, `aram`, `mariam`, `davit`, `lilit`, `narek`, `sona`, `tigran`, `emma`, `lucas` `@demo.spot.am`                                                          |
+
+Never use the demo database for real customers: the password is public and
+the QR codes are in this repository. Rebuild the file after a schema change
+with `npm run db:export-demo`; or seed an empty database you already
+migrated with `npm run db:seed-demo` (it refuses to touch a database that
+has real users).
 
 ## After a schema change
 

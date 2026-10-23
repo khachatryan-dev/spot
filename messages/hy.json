@@ -1231,6 +1231,13 @@
       "whose": "{who}՝ բոլորը",
       "linesLabel": "Դեռ չվճարված ապրանքներ",
       "unknownGuest": "Հյուր"
+    },
+    "hero": {
+      "running": "Ընթացիկ գումար",
+      "toPay": "Վճարելու է",
+      "paidAll": "Ամբողջությամբ վճարված",
+      "table": "սեղան {number}",
+      "progress": "Վճարված է {paid}՝ {total}-ից"
     }
   },
   "Reviews": {
@@ -1373,7 +1380,12 @@
     "closed": "Փակ է",
     "map": "Բացել Google Maps-ում",
     "menuTitle": "Մենյու",
-    "menuLocation": "Մասնաճյուղի մենյուն"
+    "menuLocation": "Մասնաճյուղի մենյուն",
+    "book": "Ամրագրել",
+    "call": "Զանգել",
+    "directions": "Ճանապարհ",
+    "openNow": "Հիմա բաց է",
+    "closedNow": "Հիմա փակ է"
   },
   "Discover": {
     "title": "Ռեստորաններ",
@@ -1410,7 +1422,11 @@
       "map": "Քարտեզ"
     },
     "mapLabel": "Ռեստորանների քարտեզ",
-    "distance": "{km} կմ"
+    "distance": "{km} կմ",
+    "quickCuisines": "Արագ ընտրություն",
+    "anyCuisine": "Բոլոր խոհանոցները",
+    "anyPrice": "Ցանկացած գին",
+    "anyCity": "Բոլոր քաղաքները"
   },
   "Emails": {
     "greeting": "Բարև, {name}։",
@@ -1926,6 +1942,13 @@
       "torchOn": "Միացնել լույսը",
       "torchOff": "Անջատել լույսը",
       "photo": "Օգտագործել կոդի լուսանկարը"
+    },
+    "install": {
+      "title": "Ավելացրեք Spot-ը գլխավոր էկրանին",
+      "text": "Բացեք մեկ հպումով՝ ամբողջ էկրանով, ինչպես հավելված։",
+      "install": "Տեղադրել",
+      "ios": "Safari-ում սեղմեք <share></share> «Կիսվել», ապա՝ <b>«Ավելացնել գլխավոր էկրանին»</b>։",
+      "close": "Փակել"
     }
   },
   "CustomerReviews": {

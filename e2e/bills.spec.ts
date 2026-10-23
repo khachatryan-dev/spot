@@ -166,6 +166,8 @@ test("guests split by items: own, a friend's, and cash for the rest", async ({ p
 
   await gor.reload();
   await expect(gor.getByText("Հաշիվը վճարված է։ Շնորհակալություն։")).toBeVisible();
+  await expect(gor.getByText("Ամբողջությամբ վճարված")).toBeVisible();
+  await expectAccessible(gor, "paid guest bill");
   const [bill] =
     await sql`SELECT status, paid_minor FROM bills WHERE restaurant_id = ${restaurantId}`;
   expect(bill).toEqual({ status: "paid", paid_minor: 320000 });

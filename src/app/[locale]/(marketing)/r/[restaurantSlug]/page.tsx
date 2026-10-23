@@ -1,9 +1,18 @@
-import { CalendarDays, Clock, ExternalLink, Globe, MapPin, Phone } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  ExternalLink,
+  Globe,
+  MapPin,
+  Navigation,
+  Phone,
+  Star,
+} from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getFormatter, getTranslations } from "next-intl/server";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/features/account/favorite-button";
 import { ReviewSummary } from "@/features/reviews/review-summary";
@@ -18,6 +27,7 @@ import { getCustomerMenus } from "@/server/services/customer-menu-service";
 import { getPublicRestaurant } from "@/server/services/public-restaurant-service";
 import { getReviewSummary } from "@/server/services/review-service";
 import { clientEnv } from "@/shared/config/env.client";
+import { isOpenAt } from "@/shared/domain/availability";
 import { restaurantJsonLd, safeJsonLd } from "@/shared/domain/restaurant-structured-data";
 import { WEEKDAYS } from "@/shared/schemas/opening-hours";
 import { bookingPath, bookingUrl } from "@/shared/utils/booking-url";
@@ -96,97 +106,184 @@ export default async function PublicRestaurantPage({ params, searchParams }: Pro
     })),
   });
 
+  const format = await getFormatter();
+  const openNow = shown ? isOpenAt(shown.openingHours, shown.timezone, new Date()) : false;
+  const bookable = restaurant.locations.find((l) => l.reservationsEnabled);
+  const mapQueryOf = (l: (typeof restaurant.locations)[number]) =>
+    l.latitude !== null && l.longitude !== null
+      ? `${l.latitude},${l.longitude}`
+      : `${l.addressLine}, ${l.city}`;
+  const mapsUrl = (l: (typeof restaurant.locations)[number]) =>
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQueryOf(l))}`;
+
+  const actions = [
+    restaurant.phone && {
+      key: "call",
+      href: `tel:${restaurant.phone}`,
+      Icon: Phone,
+      external: false,
+    },
+    shown && { key: "directions", href: mapsUrl(shown), Icon: Navigation, external: true },
+    restaurant.website && { key: "website", href: restaurant.website, Icon: Globe, external: true },
+  ].filter(
+    (
+      a,
+    ): a is {
+      key: "call" | "directions" | "website";
+      href: string;
+      Icon: typeof Phone;
+      external: boolean;
+    } => !!a,
+  );
+
   return (
-    <article className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6">
+    <article className="flex flex-1 flex-col bg-muted/40 pb-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
 
-      {restaurant.coverUrl && (
-        // eslint-disable-next-line @next/next/no-img-element -- remote storage, already resized
-        <img
-          src={restaurant.coverUrl}
-          alt=""
-          className="aspect-[3/1] w-full rounded-2xl object-cover"
-        />
-      )}
-      <header className="flex items-start gap-4">
-        {restaurant.logoUrl && (
+      {/* Hero: photo (or a warm gradient) with the name over it */}
+      <div className="relative isolate mx-auto w-full max-w-3xl overflow-hidden sm:mt-4 sm:rounded-3xl">
+        {restaurant.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element -- remote storage, already resized
           <img
-            src={restaurant.logoUrl}
-            alt={t("logoAlt", { name: restaurant.name })}
-            className="size-16 shrink-0 rounded-xl border object-cover"
+            src={restaurant.coverUrl}
+            alt=""
+            className="absolute inset-0 -z-20 size-full object-cover"
+          />
+        ) : (
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-20 bg-gradient-to-br from-orange-600 to-rose-600"
           />
         )}
-        <div className="flex flex-1 flex-col gap-2">
-          <div className="flex items-start justify-between gap-2">
-            <h1 className="text-3xl font-semibold">{restaurant.name}</h1>
-            <FavoriteButton
-              restaurantId={restaurant.id}
-              restaurantName={restaurant.name}
-              saved={saved}
-              loginHref={
-                session ? null : `/login?next=${encodeURIComponent(localizePath(selfPath, locale))}`
-              }
-            />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/30 to-transparent"
+        />
+        <div className="flex min-h-56 flex-col justify-end gap-3 p-5 pt-16 text-white">
+          <div className="flex items-end gap-3">
+            {restaurant.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- remote storage, already resized
+              <img
+                src={restaurant.logoUrl}
+                alt={t("logoAlt", { name: restaurant.name })}
+                className="size-16 shrink-0 rounded-2xl border-2 border-white object-cover shadow-lg"
+              />
+            ) : (
+              <span
+                aria-hidden
+                className="grid size-16 shrink-0 place-items-center rounded-2xl bg-white text-3xl font-black text-orange-700 shadow-lg"
+              >
+                {restaurant.name.trim().charAt(0)}
+              </span>
+            )}
+            <h1 className="flex-1 text-3xl font-bold text-balance drop-shadow">
+              {restaurant.name}
+            </h1>
+            <div className="rounded-full bg-white text-neutral-900 shadow">
+              <FavoriteButton
+                restaurantId={restaurant.id}
+                restaurantName={restaurant.name}
+                saved={saved}
+                loginHref={
+                  session
+                    ? null
+                    : `/login?next=${encodeURIComponent(localizePath(selfPath, locale))}`
+                }
+              />
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {restaurant.cuisines.map((c) => (
-              <Badge key={c} variant="outline">
-                {cuisine(c)}
-              </Badge>
-            ))}
+          <div className="flex flex-wrap items-center gap-2 text-sm font-semibold">
+            {summary.average !== null && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-neutral-900">
+                <Star className="size-4 fill-amber-400 text-amber-400" aria-hidden />
+                {format.number(summary.average, { maximumFractionDigits: 1 })}
+                <span className="font-medium text-neutral-600">({summary.count})</span>
+              </span>
+            )}
+            {shown && (
+              <span
+                className={
+                  openNow
+                    ? "rounded-full bg-emerald-700 px-2.5 py-1 text-white"
+                    : "rounded-full bg-neutral-800 px-2.5 py-1 text-white"
+                }
+              >
+                {t(openNow ? "openNow" : "closedNow")}
+              </span>
+            )}
             {restaurant.priceRange && (
-              <Badge
-                variant="outline"
+              <span
+                className="rounded-full bg-black/40 px-2.5 py-1 text-white"
                 aria-label={t("priceLevel", { level: restaurant.priceRange })}
+                role="img"
               >
                 {"֏".repeat(restaurant.priceRange)}
-              </Badge>
+              </span>
             )}
           </div>
         </div>
-      </header>
-
-      {restaurant.description && (
-        <p className="text-base whitespace-pre-line text-muted-foreground">
-          {restaurant.description}
-        </p>
-      )}
-
-      <div className="flex flex-wrap gap-3 text-sm">
-        {restaurant.phone && (
-          <a href={`tel:${restaurant.phone}`} className="flex items-center gap-1 hover:underline">
-            <Phone className="size-4" aria-hidden />
-            {restaurant.phone}
-          </a>
-        )}
-        {restaurant.website && (
-          <a
-            href={restaurant.website}
-            rel="noopener nofollow"
-            target="_blank"
-            className="flex items-center gap-1 hover:underline"
-          >
-            <Globe className="size-4" aria-hidden />
-            {t("website")}
-          </a>
-        )}
       </div>
 
-      <ReviewSummary {...summary} />
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 pt-4">
+        {/* Quick actions, like a banking app's action tiles */}
+        <ul className="grid grid-cols-4 gap-2">
+          {bookable && (
+            <li>
+              <Link
+                href={bookingPath(restaurant.slug, bookable.slug)}
+                className="flex flex-col items-center gap-1.5 rounded-2xl bg-primary p-3 text-center text-xs font-semibold text-primary-foreground shadow-sm"
+              >
+                <CalendarDays className="size-5" aria-hidden />
+                {t("book")}
+              </Link>
+            </li>
+          )}
+          {actions.map(({ key, href, Icon, external }) => (
+            <li key={key}>
+              <a
+                href={href}
+                {...(external ? { target: "_blank", rel: "noopener nofollow" } : {})}
+                className="flex flex-col items-center gap-1.5 rounded-2xl bg-card p-3 text-center text-xs font-semibold shadow-sm ring-1 ring-border hover:bg-orange-50 dark:hover:bg-orange-950/40"
+              >
+                <Icon className="size-5 text-primary" aria-hidden />
+                {t(key)}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-      <section aria-labelledby="locations-heading" className="flex flex-col gap-3">
-        <h2 id="locations-heading" className="text-xl font-semibold">
-          {t("locationsTitle", { count: restaurant.locations.length })}
-        </h2>
-        <ul className="flex flex-col gap-3">
-          {restaurant.locations.map((l) => {
-            const mapQuery =
-              l.latitude !== null && l.longitude !== null
-                ? `${l.latitude},${l.longitude}`
-                : `${l.addressLine}, ${l.city}`;
-            return (
-              <li key={l.id} className="flex flex-col gap-3 rounded-2xl border p-4">
+        <section className="flex flex-col gap-3 rounded-3xl bg-card p-4 shadow-sm ring-1 ring-border">
+          <div className="flex flex-wrap gap-2">
+            {restaurant.cuisines.map((c) => (
+              <span
+                key={c}
+                className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800 dark:bg-orange-900/40 dark:text-orange-300"
+              >
+                {cuisine(c)}
+              </span>
+            ))}
+          </div>
+          {restaurant.description && (
+            <p className="text-sm whitespace-pre-line text-muted-foreground">
+              {restaurant.description}
+            </p>
+          )}
+        </section>
+
+        <div className="rounded-3xl bg-card p-4 shadow-sm ring-1 ring-border">
+          <ReviewSummary {...summary} />
+        </div>
+
+        <section aria-labelledby="locations-heading" className="flex flex-col gap-3">
+          <h2 id="locations-heading" className="px-1 text-lg font-bold">
+            {t("locationsTitle", { count: restaurant.locations.length })}
+          </h2>
+          <ul className="flex flex-col gap-3">
+            {restaurant.locations.map((l) => (
+              <li
+                key={l.id}
+                className="flex flex-col gap-3 rounded-3xl bg-card p-4 shadow-sm ring-1 ring-border"
+              >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="flex flex-col gap-1">
                     <h3 className="font-semibold">{l.name}</h3>
@@ -205,13 +302,16 @@ export default async function PublicRestaurantPage({ params, searchParams }: Pro
                     )}
                   </div>
                   {l.reservationsEnabled && (
-                    <Button render={<Link href={bookingPath(restaurant.slug, l.slug)} />}>
+                    <Button
+                      className="rounded-full"
+                      render={<Link href={bookingPath(restaurant.slug, l.slug)} />}
+                    >
                       <CalendarDays aria-hidden />
                       {t("reserve")}
                     </Button>
                   )}
                 </div>
-                <details className="text-sm">
+                <details className="rounded-2xl bg-muted/60 px-3 py-2 text-sm">
                   <summary className="flex cursor-pointer items-center gap-1 font-medium">
                     <Clock className="size-4" aria-hidden />
                     {t("hours")}
@@ -230,68 +330,82 @@ export default async function PublicRestaurantPage({ params, searchParams }: Pro
                   </dl>
                 </details>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
+                  href={mapsUrl(l)}
                   target="_blank"
                   rel="noopener"
-                  className="flex items-center gap-1 self-start text-sm font-medium hover:underline"
+                  className="flex items-center gap-1 self-start text-sm font-medium text-primary hover:underline"
                 >
                   <ExternalLink className="size-4" aria-hidden />
                   {t("map")}
                 </a>
               </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      {shown && menus.length > 0 && (
-        <section aria-labelledby="menu-heading" className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 id="menu-heading" className="text-xl font-semibold">
-              {t("menuTitle")}
-            </h2>
-            {restaurant.locations.length > 1 && (
-              <nav aria-label={t("menuLocation")} className="flex flex-wrap gap-2 text-sm">
-                {restaurant.locations.map((l) => (
-                  <Link
-                    key={l.id}
-                    href={{ pathname: selfPath, query: { location: l.slug } }}
-                    aria-current={l.id === shown.id ? "page" : undefined}
-                    className="rounded-full border px-3 py-1 aria-[current=page]:border-primary aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
-                  >
-                    {l.name}
-                  </Link>
-                ))}
-              </nav>
-            )}
-          </div>
-          {menus.map((menu) => (
-            <div key={menu.id} className="flex flex-col gap-4">
-              {menus.length > 1 && <h3 className="text-lg font-semibold">{menu.name}</h3>}
-              {menu.categories.map((category) => (
-                <div key={category.id} className="flex flex-col gap-2">
-                  <h4 className="font-semibold">{category.name}</h4>
-                  <ul className="flex flex-col divide-y rounded-2xl border">
-                    {category.items.map((item) => (
-                      <li key={item.id} className="flex justify-between gap-3 p-3 text-sm">
-                        <span className="flex flex-col">
-                          <span className="font-medium">{item.name}</span>
-                          {item.description && (
-                            <span className="text-muted-foreground">{item.description}</span>
-                          )}
-                        </span>
-                        <span className="tabular-nums">
-                          {formatMoney(item.priceMinor, restaurant.currency, locale)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          ))}
+            ))}
+          </ul>
         </section>
-      )}
+
+        {shown && menus.length > 0 && (
+          <section aria-labelledby="menu-heading" className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 px-1">
+              <h2 id="menu-heading" className="text-lg font-bold">
+                {t("menuTitle")}
+              </h2>
+              {restaurant.locations.length > 1 && (
+                <nav aria-label={t("menuLocation")} className="flex flex-wrap gap-2 text-sm">
+                  {restaurant.locations.map((l) => (
+                    <Link
+                      key={l.id}
+                      href={{ pathname: selfPath, query: { location: l.slug } }}
+                      aria-current={l.id === shown.id ? "page" : undefined}
+                      className="rounded-full bg-card px-3 py-1 ring-1 ring-border aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground aria-[current=page]:ring-primary"
+                    >
+                      {l.name}
+                    </Link>
+                  ))}
+                </nav>
+              )}
+            </div>
+            {menus.map((menu) => (
+              <div key={menu.id} className="flex flex-col gap-4">
+                {menus.length > 1 && <h3 className="px-1 font-semibold">{menu.name}</h3>}
+                {menu.categories.map((category) => (
+                  <div key={category.id} className="flex flex-col gap-2">
+                    <h4 className="px-1 text-sm font-semibold text-muted-foreground uppercase">
+                      {category.name}
+                    </h4>
+                    <ul className="flex flex-col divide-y rounded-3xl bg-card shadow-sm ring-1 ring-border">
+                      {category.items.map((item) => (
+                        <li key={item.id} className="flex items-center gap-3 p-3 text-sm">
+                          {item.imageUrl && (
+                            <Image
+                              src={item.imageUrl}
+                              alt=""
+                              width={56}
+                              height={56}
+                              unoptimized
+                              className="size-14 shrink-0 rounded-xl object-cover"
+                            />
+                          )}
+                          <span className="flex min-w-0 flex-1 flex-col">
+                            <span className="font-medium">{item.name}</span>
+                            {item.description && (
+                              <span className="line-clamp-2 text-muted-foreground">
+                                {item.description}
+                              </span>
+                            )}
+                          </span>
+                          <span className="font-bold whitespace-nowrap text-primary tabular-nums">
+                            {formatMoney(item.priceMinor, restaurant.currency, locale)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </section>
+        )}
+      </div>
     </article>
   );
 }

@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Hourglass } from "lucide-react";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
@@ -86,48 +86,117 @@ export default async function GuestBillPage({ params }: PageProps<"/[locale]/tab
     view && view.bill.status !== "open" ? await getBillPaymentState(view.bill.id) : null;
   const t = await getTranslations("Bill");
 
+  const money = (minor: number) => (view ? formatMoney(minor, view.bill.currency, locale) : "");
+  const bill = view?.bill;
+  // The big number: what's left once the bill is final, else the running total.
+  const headline =
+    bill?.status === "finalized" && state
+      ? { label: t("hero.toPay"), amount: money(state.remainingMinor) }
+      : bill?.status === "paid"
+        ? { label: t("hero.paidAll"), amount: money(bill.totalMinor) }
+        : { label: t("hero.running"), amount: money(bill?.totalMinor ?? 0) };
+  const paidShare = bill && bill.totalMinor > 0 ? Math.min(1, bill.paidMinor / bill.totalMinor) : 0;
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <Link
         href="/table"
-        className="flex items-center gap-1 self-start text-sm text-muted-foreground"
+        className="flex items-center gap-1 self-start rounded-full bg-card px-3 py-1.5 text-sm font-medium shadow-sm ring-1 ring-border"
       >
         <ArrowLeft className="size-4" aria-hidden />
         {t("backToMenu")}
       </Link>
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
-      {!view ? (
-        <p className="text-sm text-muted-foreground">{t("noVisit")}</p>
+      {!view || !bill ? (
+        <>
+          <h1 className="text-2xl font-bold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("noVisit")}</p>
+        </>
       ) : (
         <>
-          <p className="text-sm text-muted-foreground">
-            {t(view.bill.status === "open" ? "guestOpenNote" : "guestFinalNote")}
+          {/* Banking-style header: the one number that matters, and how much is paid */}
+          <div
+            className={`flex flex-col gap-3 rounded-3xl bg-gradient-to-br p-5 text-white shadow-lg ${
+              bill.status === "paid"
+                ? "from-emerald-700 to-teal-700 shadow-emerald-700/20"
+                : "from-orange-700 to-rose-600 shadow-orange-700/20"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <h1 className="text-base font-semibold">
+                {t("title")} · {t("hero.table", { number: view.tableNumber })}
+              </h1>
+              <span className="rounded-full bg-black/20 px-2.5 py-0.5 text-xs font-semibold">
+                {t(`status.${bill.status}`)}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm">{headline.label}</span>
+              <span className="text-4xl font-bold tracking-tight tabular-nums">
+                {headline.amount}
+              </span>
+            </div>
+            {bill.status !== "open" && (
+              <div className="flex flex-col gap-1">
+                <div aria-hidden className="h-2 overflow-hidden rounded-full bg-black/20">
+                  <div
+                    className="h-full rounded-full bg-white transition-[width] duration-700"
+                    style={{ width: `${paidShare * 100}%` }}
+                  />
+                </div>
+                <span className="text-xs">
+                  {t("hero.progress", {
+                    paid: money(bill.paidMinor),
+                    total: money(bill.totalMinor),
+                  })}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <p className="px-1 text-sm text-muted-foreground">
+            {t(bill.status === "open" ? "guestOpenNote" : "guestFinalNote")}
           </p>
-          <BillDetails
-            bill={view.bill}
-            lines={view.lines}
-            locale={locale}
-            coveredItemIds={state?.coveredItemIds}
-          />
-          {view.bill.status === "finalized" && state && state.remainingMinor > 0 && session && (
+
+          {bill.status === "finalized" && state && state.remainingMinor > 0 && session && (
             <PayBillPanel
               options={payOptions(view, state, session.memberId, locale, t("you"), (n) =>
                 t("guestN", { n }),
               )}
             />
           )}
-          {view.bill.status === "finalized" && state && state.remainingMinor === 0 && (
-            <p role="status" className="rounded-xl bg-muted/50 p-3 text-sm">
+          {bill.status === "finalized" && state && state.remainingMinor === 0 && (
+            <p
+              role="status"
+              className="flex items-center gap-3 rounded-3xl bg-amber-50 p-4 text-sm font-medium ring-1 ring-amber-200 dark:bg-amber-950/40 dark:ring-amber-800"
+            >
+              <Hourglass
+                className="size-5 shrink-0 text-amber-700 dark:text-amber-300"
+                aria-hidden
+              />
               {t("allReserved")}
             </p>
           )}
-          {view.bill.status === "paid" && (
-            <p role="status" className="rounded-xl bg-primary/10 p-3 text-sm font-medium">
+          {bill.status === "paid" && (
+            <p
+              role="status"
+              className="flex items-center gap-3 rounded-3xl bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 ring-1 ring-emerald-100 motion-safe:animate-in motion-safe:zoom-in-95 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900/50"
+            >
+              <CheckCircle2
+                className="size-6 shrink-0 text-emerald-700 dark:text-emerald-300"
+                aria-hidden
+              />
               {t("thanks")}
             </p>
           )}
+
+          <BillDetails
+            bill={bill}
+            lines={view.lines}
+            locale={locale}
+            coveredItemIds={state?.coveredItemIds}
+          />
           <LiveRefresh
-            channel={realtimeChannels.session(view.bill.tableSessionId)}
+            channel={realtimeChannels.session(bill.tableSessionId)}
             enabled={isRealtimeEnabled()}
             fallbackSeconds={15}
           />

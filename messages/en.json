@@ -1231,6 +1231,13 @@
       "whose": "{who}'s items",
       "linesLabel": "Items not paid yet",
       "unknownGuest": "A guest"
+    },
+    "hero": {
+      "running": "Running total",
+      "toPay": "Left to pay",
+      "paidAll": "Paid in full",
+      "table": "table {number}",
+      "progress": "{paid} of {total} paid"
     }
   },
   "Reviews": {
@@ -1373,7 +1380,12 @@
     "closed": "Closed",
     "map": "Open in Google Maps",
     "menuTitle": "Menu",
-    "menuLocation": "Menu for location"
+    "menuLocation": "Menu for location",
+    "book": "Book",
+    "call": "Call",
+    "directions": "Directions",
+    "openNow": "Open now",
+    "closedNow": "Closed now"
   },
   "Discover": {
     "title": "Restaurants",
@@ -1410,7 +1422,11 @@
       "map": "Map"
     },
     "mapLabel": "Map of restaurants",
-    "distance": "{km} km"
+    "distance": "{km} km",
+    "quickCuisines": "Quick picks",
+    "anyCuisine": "Any cuisine",
+    "anyPrice": "Any price",
+    "anyCity": "Any city"
   },
   "Emails": {
     "greeting": "Hello, {name}!",
@@ -1926,6 +1942,13 @@
       "torchOn": "Turn the light on",
       "torchOff": "Turn the light off",
       "photo": "Use a photo of the code"
+    },
+    "install": {
+      "title": "Add Spot to your home screen",
+      "text": "Open it in one tap, full-screen, like an app.",
+      "install": "Install",
+      "ios": "In Safari tap <share></share> Share, then <b>Add to Home Screen</b>.",
+      "close": "Close"
     }
   },
   "CustomerReviews": {

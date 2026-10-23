@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, Users, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -57,12 +57,20 @@ export function PayBillPanel({ options }: { options: PayOptions }) {
       : []);
 
   return (
-    <section aria-labelledby="pay-heading" className="flex flex-col gap-3 rounded-2xl border p-4">
-      <h2 id="pay-heading" className="font-semibold">
+    <section
+      aria-labelledby="pay-heading"
+      className="flex flex-col gap-4 rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border"
+    >
+      <h2 id="pay-heading" className="text-lg font-bold">
         {t("title", { amount: options.remaining })}
       </h2>
-      <Button disabled={busy !== null} onClick={() => pay("full", { mode: "full" })}>
-        {spinner("full")}
+      <Button
+        size="lg"
+        className="h-14 rounded-2xl text-base shadow-md shadow-orange-700/20"
+        disabled={busy !== null}
+        onClick={() => pay("full", { mode: "full" })}
+      >
+        {spinner("full") ?? <Wallet className="size-5" aria-hidden />}
         {t("payRest", { amount: options.remaining })}
       </Button>
       {options.picker && (
@@ -74,14 +82,19 @@ export function PayBillPanel({ options }: { options: PayOptions }) {
         />
       )}
       {(options.split || options.splitChoices.length > 0) && (
-        <fieldset className="flex flex-col gap-2">
-          <legend className="mb-1 text-sm font-medium">{t("splitTitle")}</legend>
+        <fieldset className="flex flex-col gap-3 rounded-2xl bg-muted/50 p-4">
+          <legend className="sr-only">{t("splitTitle")}</legend>
+          <p aria-hidden className="flex items-center gap-2 text-sm font-semibold">
+            <Users className="size-4 text-primary" />
+            {t("splitTitle")}
+          </p>
           {!options.split && (
             <div className="flex flex-wrap gap-2" role="group" aria-label={t("waysLabel")}>
               {options.splitChoices.map((choice) => (
                 <Button
                   key={choice.count}
                   size="sm"
+                  className="h-9 rounded-full px-4"
                   variant={ways === choice.count ? "default" : "outline"}
                   aria-pressed={ways === choice.count}
                   onClick={() => setWays(choice.count)}
@@ -97,7 +110,7 @@ export function PayBillPanel({ options }: { options: PayOptions }) {
                 <li key={share.index}>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="h-12 w-full rounded-2xl bg-card font-semibold"
                     disabled={busy !== null}
                     onClick={() =>
                       pay(`share-${share.index}`, {

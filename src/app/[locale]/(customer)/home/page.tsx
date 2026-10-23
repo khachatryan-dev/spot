@@ -12,6 +12,7 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
+import { InstallPrompt } from "@/features/customer-app/install-prompt";
 import { resolveLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { getSession } from "@/server/auth/session";
@@ -137,6 +138,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]/home">) 
           </div>
         </section>
       )}
+
+      <InstallPrompt />
 
       {/* Quick tiles */}
       <ul className="grid grid-cols-4 gap-2">

@@ -63,8 +63,11 @@ export function ItemPicker({ lines, people, bill, initial, payLabel, onPay, busy
     people.find((p) => p.memberId === memberId)?.label ?? t("unknownGuest");
 
   return (
-    <fieldset className="flex flex-col gap-3">
-      <legend className="mb-1 text-sm font-medium">{t("title")}</legend>
+    <fieldset className="flex flex-col gap-3 rounded-2xl bg-muted/50 p-4">
+      <legend className="sr-only">{t("title")}</legend>
+      <p aria-hidden className="text-sm font-semibold">
+        {t("title")}
+      </p>
       {people.length > 1 && (
         <div className="flex flex-wrap gap-2" role="group" aria-label={t("quickLabel")}>
           {people.map((person) => {
@@ -75,6 +78,7 @@ export function ItemPicker({ lines, people, bill, initial, payLabel, onPay, busy
               <Button
                 key={person.memberId}
                 size="sm"
+                className="h-8 rounded-full px-3"
                 variant={all ? "default" : "outline"}
                 aria-pressed={all}
                 onClick={() => toggle(theirs, !all)}
@@ -85,23 +89,23 @@ export function ItemPicker({ lines, people, bill, initial, payLabel, onPay, busy
           })}
         </div>
       )}
-      <ul className="flex flex-col gap-1" aria-label={t("linesLabel")}>
+      <ul className="flex flex-col gap-1.5" aria-label={t("linesLabel")}>
         {lines.map((line) => (
           <li key={line.id}>
-            <label className="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm hover:bg-muted/50">
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl bg-card px-3 py-2.5 text-sm ring-1 ring-border has-checked:ring-2 has-checked:ring-primary">
               <input
                 type="checkbox"
-                className="size-4 accent-primary"
+                className="size-5 shrink-0 accent-primary"
                 checked={chosen.has(line.id)}
                 onChange={(e) => toggle([line.id], e.target.checked)}
               />
               <span className="flex-1">
                 {line.quantity} × {line.name}
-                <span className="block text-xs text-muted-foreground">
+                <span className="mt-0.5 block w-fit rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                   {labelOf(line.memberId)}
                 </span>
               </span>
-              <span className="tabular-nums">
+              <span className="font-semibold tabular-nums">
                 {formatMoney(line.lineTotalMinor, bill.currency, locale)}
               </span>
             </label>
@@ -109,6 +113,8 @@ export function ItemPicker({ lines, people, bill, initial, payLabel, onPay, busy
         ))}
       </ul>
       <Button
+        size="lg"
+        className="h-12 rounded-2xl"
         disabled={busy || paying || chosen.size === 0 || amount <= 0}
         onClick={async () => {
           setPaying(true);

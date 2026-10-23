@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Armenian } from "next/font/google";
 import { headers } from "next/headers";
 import { connection } from "next/server";
@@ -26,6 +26,14 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/** Browser and status-bar colour on phones (matches the brand, light and dark). */
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fdfaf6" },
+    { media: "(prefers-color-scheme: dark)", color: "#241a14" },
+  ],
+};
+
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
@@ -35,6 +43,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
     description: t("description"),
     // Absolute URLs for share previews and canonical links.
     metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
+    // Added to an iPhone's home screen, Spot opens full-screen like an app.
+    appleWebApp: { capable: true, title: "Spot", statusBarStyle: "default" },
   };
 }
 

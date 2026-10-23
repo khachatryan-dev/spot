@@ -16,6 +16,8 @@
     "db:check": "drizzle-kit check",
     "db:studio": "drizzle-kit studio",
     "db:export-schema": "bash scripts/export-db-schema.sh",
+    "db:export-demo": "bash scripts/export-demo-db.sh",
+    "db:seed-demo": "tsx --conditions=react-server --env-file=.env.local scripts/seed-demo.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

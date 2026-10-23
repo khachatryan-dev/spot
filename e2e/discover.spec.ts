@@ -44,10 +44,12 @@ test("guests search and filter restaurants", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("button", { name: "EN" })).toBeInViewport({ ratio: 1 });
   await page.goBack();
-  const noSideScroll = await page.evaluate(
-    () => document.documentElement.scrollWidth <= window.innerWidth,
-  );
-  expect(noSideScroll).toBe(true);
+  // Nothing wider than the phone (else the browser zooms out and taps miss).
+  const width = await page.evaluate(() => [
+    window.innerWidth,
+    document.documentElement.scrollWidth,
+  ]);
+  expect(width).toEqual([page.viewportSize()!.width, page.viewportSize()!.width]);
 
   await expect
     .poll(async () => {
